@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+Cython = "==0.29.33"  # Add this for mac os users
+boto3 = "==1.22.7"
+
+[dev-packages]
+pre-commit = "==3.3.3"
+pytest = "==7.1.1"
+pytest-cov = "==3.0.0"
+pytest-mock = "==3.10.0"
+moto = "==3.1.1"
+pylint = "==2.13.8"
+pylint-pydantic = "==0.1.8"
+httpx = "==0.23.3"
+
+[requires]
+python_version = "3.8"

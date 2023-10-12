@@ -1,0 +1,34 @@
+service: sparcs-email-service
+
+custom:
+  projectName: sparcs-events
+  serviceName: email
+  stage: ${opt:stage, self:provider.stage}
+  entities: ${self:custom.stage}-${self:custom.projectName}-entities
+  pythonRequirements:
+    dockerizePip: non-linux
+    layer:
+      name: sparcs-events-${self:provider.stage}-python-requirements
+      path: .
+      compatibleRuntimes:
+        - python3.8
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: ap-southeast-1
+
+constructs:
+  ${self:provider.stage}-email-construct:
+    type: queue
+    worker:
+      handler: handler.send_email_handler
+
+plugins:
+  - serverless-lift
+  - serverless-python-requirements
+
+package:
+  patterns:
+    - "!node_modules/**"
