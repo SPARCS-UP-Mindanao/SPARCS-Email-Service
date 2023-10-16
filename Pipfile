@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 Cython = "==0.29.33"  # Add this for mac os users
 boto3 = "==1.22.7"
+pydantic = "==1.10.13"
 
 [dev-packages]
 pre-commit = "==3.3.3"
@@ -15,7 +16,6 @@ pytest-mock = "==3.10.0"
 moto = "==3.1.1"
 pylint = "==2.13.8"
 pylint-pydantic = "==0.1.8"
-httpx = "==0.23.3"
 
 [requires]
 python_version = "3.8"

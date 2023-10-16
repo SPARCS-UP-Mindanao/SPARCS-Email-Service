@@ -1,0 +1,14 @@
+send_email:
+  handler: handler.send_email_handler
+  layers:
+    - { Ref: PythonRequirementsLambdaLayer }
+  events:
+    - sqs:
+        arn:
+          "Fn::GetAtt": [ EmailQueue, Arn ]
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "sqs:*"
+      Resource:
+        - "Fn::GetAtt": [ EmailQueue, Arn ]
