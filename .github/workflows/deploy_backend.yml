@@ -28,7 +28,7 @@ jobs:
 
         - name: Install dependencies
           run: |
-            python3 -m pip install pipenv==2023.4.29 
+            python3 -m pip install pipenv==2023.4.29
             pipenv install
 
         - name: Install Serverless Framework

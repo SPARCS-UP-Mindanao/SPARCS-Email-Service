@@ -5,6 +5,7 @@ custom:
   serviceName: email
   stage: ${opt:stage, self:provider.stage}
   emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
+  sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   pythonRequirements:
     dockerizePip: non-linux
     layer:
@@ -23,6 +24,8 @@ provider:
     REGION: ${self:provider.region}
     STAGE: ${self:provider.stage}
     EMAIL_QUEUE: ${self:custom.emailQueue}
+    SENDER_EMAIL: contact@sparcsup.com
+    SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
 
 resources:
   - ${file(resources/sqs.yml)}

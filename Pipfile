@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 Cython = "==0.29.33"  # Add this for mac os users
 boto3 = "==1.22.7"
-pydantic = "==1.10.13"
+pydantic = {version = "<2", extras = ["email"]}
 
 [dev-packages]
 pre-commit = "==3.3.3"

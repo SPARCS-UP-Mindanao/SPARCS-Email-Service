@@ -1,4 +1,4 @@
-send_email:
+send-email:
   handler: handler.send_email_handler
   layers:
     - { Ref: PythonRequirementsLambdaLayer }
@@ -12,3 +12,8 @@ send_email:
         - "sqs:*"
       Resource:
         - "Fn::GetAtt": [ EmailQueue, Arn ]
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource:
+        - arn:aws:ssm:*:*:parameter/${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
