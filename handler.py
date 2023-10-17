@@ -1,17 +1,20 @@
 import json
-import logging
 import os
 
 import boto3
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+from model.email import EmailIn
+from usecase.email_usecase import EmailUsecase
 
-QUEUE_URL = os.getenv('QUEUE_URL')
+EMAIL_QUEUE = os.getenv('EMAIL_QUEUE')
 SQS = boto3.client('sqs')
+email_usecase = EmailUsecase()
 
 
 def send_email_handler(event, context):
     _ = context
     for record in event['Records']:
-        return
+        message_body = json.loads(record['body'])
+        email = EmailIn(**message_body)
+        email_usecase.send_email(email)
+        SQS.delete_message(QueueUrl=EMAIL_QUEUE, ReceiptHandle=record['receiptHandle'])
