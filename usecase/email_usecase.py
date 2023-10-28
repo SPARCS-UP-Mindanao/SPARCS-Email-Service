@@ -10,7 +10,7 @@ from utils.utils import Utils
 
 class EmailUsecase:
     def __init__(self):
-        self.sendgrid_api_key = Utils.get_secret(os.getenv('SENDGRID_API_KEY_NAME'))
+        self.sendgrid_api_key = Utils.get_secret(os.getenv('SEND_GRID_API_KEY_NAME'))
         self.sender_email = os.getenv('SENDER_EMAIL')
         self.display_name = 'UP Mindanao SPARCS'
         self.logger = logging.getLogger()
@@ -26,7 +26,7 @@ class EmailUsecase:
             msg['Cc'] = cc
         if bcc:
             msg['Bcc'] = bcc
-        msg.attach(MIMEText(content, 'plain'))
+        msg.attach(MIMEText(content, 'html'))
         return msg
 
     def send_email(self, email_body: EmailIn):
@@ -54,7 +54,6 @@ class EmailUsecase:
 
                 message = f'Email sent successfully to {to_email}!'
                 self.logger.info(message)
-
         except Exception as e:
             message = f'An error occurred while sending the email: {e}'
             self.logger.error(message)
