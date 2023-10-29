@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .mainContent{
+            width:100%;
+            padding: 40px 0px;
+            background-color: #ffe4c4;
+        }
+        .contentDiv{
+            width: 510px;
+            border-style:solid;
+            padding: 30px 0px;
+            margin: 10px 0px;
+            text-align: left;
+        }
+        header, footer, .contentDiv{
+            background-color: #f0f8ff;
+        }
+        body{
+            margin: 20px 0px;
+            background-color: #ffe4c4;
+        }
+        header, footer{
+            width: 510px;
+            padding: 20px 0px;
+            border-style:solid;
+        }
+        .emailBody{
+            padding: 0px 20px;
+        }
+        .emailSalutation, .emailRegards{
+            padding: 10px 20px;
+        }
+        .bg-testing{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <center>
+    <div class="mainContent emailHtml">
+        <header>
+            <table>
+                <tr>
+                   <td>this is a header</td>
+                   <td>this is a header</td>
+                </tr>
+            </table>
+        </header>
+        <div class="contentDiv">
+            <table>
+                <tr>
+                    <td>
+                        <div class="emailSalutation">
+                            {{salutation}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="emailBody">
+                        {% for paragraph in body:%}
+                        <p>{{paragraph}}</p>
+                        {% endfor %}
+                    </td>    
+                </tr>   
+                <tr>
+                    <td>
+                        <div class="emailRegards">
+                            {% for line in regards:%}
+                            <p>{{line}}</p>
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <footer>
+            <table>
+                <tr>
+                   <td>this is a footer</td>
+                   <td>this is a footer</td>
+                </tr>
+            </table>
+        </footer>
+    </div>
+    </center>
+  
+</body>
+</html>

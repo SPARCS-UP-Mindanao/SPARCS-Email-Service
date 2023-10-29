@@ -1,5 +1,6 @@
 import logging
 import os
+import jinja2
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -26,16 +27,19 @@ class EmailUsecase:
             msg['Cc'] = cc
         if bcc:
             msg['Bcc'] = bcc
-        msg.attach(MIMEText(content, 'plain'))
+        msg.attach(MIMEText(content, 'html'))
         return msg
 
     def send_email(self, email_body: EmailIn):
+        j2 = jinja2.Environment()
         email_from = f'{self.display_name} <{self.sender_email}>'
         to_email = email_body.to
         cc_email = email_body.cc
         bcc_email = email_body.bcc
         subject = email_body.subject
-        content = email_body.content
+        
+        htmlTemplate = j2.from_string(email_body.content)
+        content = htmlTemplate.render(salutation=email_body.salutation, body = email_body.body, regards=email_body.regards)
 
         try:
             with smtplib.SMTP('smtp.sendgrid.net', 587) as server:
@@ -54,7 +58,6 @@ class EmailUsecase:
 
                 message = f'Email sent successfully to {to_email}!'
                 self.logger.info(message)
-
         except Exception as e:
             message = f'An error occurred while sending the email: {e}'
             self.logger.error(message)
