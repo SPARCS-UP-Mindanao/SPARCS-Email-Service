@@ -11,7 +11,7 @@ from utils.utils import Utils
 
 class EmailUsecase:
     def __init__(self):
-        self.sendgrid_api_key = Utils.get_secret(os.getenv('SEND_GRID_API_KEY_NAME'))
+        self.sendgrid_api_key = Utils.get_secret(os.getenv('SENDGRID_API_KEY_NAME'))
         self.sender_email = os.getenv('SENDER_EMAIL')
         self.display_name = 'UP Mindanao SPARCS'
         self.logger = logging.getLogger()
