@@ -35,7 +35,7 @@ class EmailUsecase:
         cc_email = email_body.cc
         bcc_email = email_body.bcc
         subject = email_body.subject
-        content = email_body.content
+        content = email_body.salutation + email_body.body + email_body.content + email_body.regards
 
         try:
             with smtplib.SMTP('smtp.sendgrid.net', 587) as server:
