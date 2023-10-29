@@ -1,5 +1,6 @@
 import logging
 import os
+import jinja2
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -30,12 +31,15 @@ class EmailUsecase:
         return msg
 
     def send_email(self, email_body: EmailIn):
+        j2 = jinja2.Environment()
         email_from = f'{self.display_name} <{self.sender_email}>'
         to_email = email_body.to
         cc_email = email_body.cc
         bcc_email = email_body.bcc
         subject = email_body.subject
-        content = email_body.salutation + email_body.body + email_body.content + email_body.regards
+        
+        htmlTemplate = j2.from_string(email_body.content)
+        content = htmlTemplate.render(salutation=email_body.salutation, body = email_body.body, regards=email_body.regards)
 
         try:
             with smtplib.SMTP('smtp.sendgrid.net', 587) as server:

@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        .myDiv{
+        .mainContent{
             width:100%;
             padding: 40px 0px;
             background-color: #ffe4c4;
         }
-        .yourDiv{
+        .contentMessageDiv{
             width: 510px;
             border-style:solid;
             padding: 20px 0px;
@@ -31,11 +31,17 @@
         td{
             text-align: center;
         }
+        .bg-testing{
+            background-color: red;
+        }
     </style>
 </head>
 <body>
+    <div class="emailSalutation bg-testing">
+        {{salutation}}
+    </div>
     <center>
-    <div class="myDiv">
+    <div class="mainContent emailHtml">
         <header>
             <table>
                 <tr>
@@ -44,7 +50,7 @@
                 </tr>
             </table>
         </header>
-        <div class="yourDiv">
+        <div class="contentMessageDiv">
             <table>
                 <tr>
                     <th>
@@ -52,9 +58,16 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum?</p>
+                    <td class="emailBody">
+                        <p>{{body}}</p>
                     </td>    
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            
+                        </p>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -73,5 +86,8 @@
         </footer>
     </div>
     </center>
+    <div class="bg-testing">
+        {{regards}}
+    </div>
 </body>
 </html>
