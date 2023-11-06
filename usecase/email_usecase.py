@@ -21,12 +21,12 @@ class EmailUsecase:
     ) -> MIMEMultipart:
         msg = MIMEMultipart()
         msg['From'] = sender_email
-        msg['To'] = to_email
+        msg['To'] = ", ".join(to_email)
         msg['Subject'] = subject
         if cc:
-            msg['Cc'] = cc
+            msg['Cc'] = ", ".join(cc)
         if bcc:
-            msg['Bcc'] = bcc
+            msg['Bcc'] = ", ".join(bcc)
         msg.attach(MIMEText(content, 'html'))
         return msg
 
