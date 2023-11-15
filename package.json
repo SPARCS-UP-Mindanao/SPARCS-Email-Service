@@ -1,11 +1,11 @@
 {
-  "name": "aws-python-sqs-worker",
+  "name": "sparcs-events-email-service",
   "version": "1.0.0",
-  "description": "Serverless Framework Python SQS Producer-Consumer on AWS",
+  "description": "Serverless Framework Python Email SQS Producer-Consumer on AWS",
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "serverless-lift": "^1.21.0",
+    "serverless-iam-roles-per-function": "^3.2.0",
     "serverless-python-requirements": "^6.0.0"
   }
 }

@@ -4,7 +4,8 @@ custom:
   projectName: sparcs-events
   serviceName: email
   stage: ${opt:stage, self:provider.stage}
-  entities: ${self:custom.stage}-${self:custom.projectName}-entities
+  emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
+  sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   pythonRequirements:
     dockerizePip: non-linux
     layer:
@@ -18,16 +19,23 @@ provider:
   runtime: python3.8
   stage: dev
   region: ap-southeast-1
+  versionFunctions: false
+  environment:
+    REGION: ${self:provider.region}
+    STAGE: ${self:provider.stage}
+    EMAIL_QUEUE: ${self:custom.emailQueue}
+    SENDER_EMAIL: contact@sparcsup.com
+    SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
 
-constructs:
-  ${self:provider.stage}-email-construct:
-    type: queue
-    worker:
-      handler: handler.send_email_handler
+resources:
+  - ${file(resources/sqs.yml)}
+
+functions:
+  - ${file(resources/send_email.yml)}
 
 plugins:
-  - serverless-lift
   - serverless-python-requirements
+  - serverless-iam-roles-per-function
 
 package:
   patterns:
