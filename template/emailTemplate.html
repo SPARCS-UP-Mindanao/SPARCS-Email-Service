@@ -3,43 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .mainContent{
-            width:100%;
-            padding: 40px 0px;
-            background-color: #ffe4c4;
-        }
-        .contentDiv{
-            width: 510px;
-            border-style:solid;
-            padding: 30px 0px;
-            margin: 10px 0px;
-            text-align: left;
-        }
-        header, footer, .contentDiv{
-            background-color: #f0f8ff;
-        }
-        body{
-            margin: 20px 0px;
-            background-color: #ffe4c4;
-        }
-        header, footer{
-            width: 510px;
-            padding: 20px 0px;
-            border-style:solid;
-        }
-        .emailBody{
-            padding: 0px 20px;
-        }
-        .emailSalutation, .emailRegards{
-            padding: 10px 20px;
-        }
-        .bg-testing{
-            background-color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Email-Template</title>
+    
 </head>
+
 <body>
 
     <center>
@@ -47,8 +19,10 @@
         <header>
             <table>
                 <tr>
-                   <td>this is a header</td>
-                   <td>this is a header</td>
+                    <td class="branding">
+                        <img src="sparcs_logo.png" alt="SPARCS Logo">
+                        <p><bold>The Society of Programmers and Refined Computer Scientists (SPARCS)</bold></p>
+                    </td> 
                 </tr>
             </table>
         </header>
@@ -57,23 +31,51 @@
                 <tr>
                     <td>
                         <div class="emailSalutation">
-                            {{salutation}}
+                            <p>Hey {Applicant Name},</p>
                         </div>
                     </td>
                 </tr>
+                <tr><td>
+                    <p style="text-align: center;">CONGRATULATIONS!</p>
+                </td></tr>
                 <tr>
                     <td class="emailBody">
-                        {% for paragraph in body:%}
-                        <p>{{paragraph}}</p>
-                        {% endfor %}
+                        
+                        <p>You have been successfully registered at {event name}.</p>
+                        <p>Please wait for more information.</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex vel omnis, pariatur adipisci quibusdam alias hic saepe iure odit, minima quam, praesentium obcaecati doloremque quia sunt rerum et dignissimos quis?</p>
+                        
                     </td>    
                 </tr>   
                 <tr>
                     <td>
                         <div class="emailRegards">
-                            {% for line in regards:%}
-                            <p>{{line}}</p>
-                            {% endfor %}
+                            <p>Best,</p>
+                            <p>SPARCS Team</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="member-card">
+                            <div class="circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 60 61" fill="none">
+                                    <circle cx="30" cy="30.2" r="30" fill="#D9D9D9"/>
+                                </svg>
+                            </div>
+                            <div class=vertical-line></div>
+                            <div class= "para">
+                                <div class="card-content">
+                                    <p>[SPARCS Member's Name]</p>
+                                    <p>The Society of Computer Programmers and Refined Computer Scientists (SPARCS)</p>
+                                </div>
+                                <div class="social-icons">
+                                    <a href="https://www.facebook.com" target="_blank" class="icon-link"><i class="fa-brands fa-facebook"></i></a>
+                                    <a href="https://www.instagram.com" target="_blank" class="icon-link"><i class="fa-brands fa-square-instagram"></i></a>
+                                    <a href="https://www.linkedin.com" target="_blank" class="icon-link"><i class="fa-brands fa-linkedin"></i></a>
+                                    <a href="https://www.yourwebsite.com" target="_blank" class="icon-link"><i class="fas fa-globe"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -82,13 +84,21 @@
         <footer>
             <table>
                 <tr>
-                   <td>this is a footer</td>
-                   <td>this is a footer</td>
+                    <td>
+                        <img src="logo.png" alt="SPARCS Logo">
+                        <div class="org-social-icons">
+                            <a href="https://www.facebook.com" target="_blank" class="footer-icons"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.instagram.com" target="_blank" class="footer-icons"><i class="fa-brands fa-square-instagram"></i></a>
+                            <a href="https://www.linkedin.com" target="_blank" class="footer-icons"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://www.yourwebsite.com" target="_blank" class="footer-icons"><i class="fas fa-globe"></i></a>
+                        </div>
+                        <p style="color:white">UP Mindanao, Tugbok, Davao City</p>
+                        <p style="color:white">8000 Davao del Sur</p>
+                    </td>
                 </tr>
             </table>
         </footer>
     </div>
     </center>
-  
 </body>
 </html>
