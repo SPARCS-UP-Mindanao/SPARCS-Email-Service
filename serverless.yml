@@ -9,7 +9,7 @@ custom:
   pythonRequirements:
     dockerizePip: non-linux
     layer:
-      name: sparcs-events-${self:provider.stage}-python-requirements
+      name: sparcs-events-${self:custom.stage}-python-requirements
       path: .
       compatibleRuntimes:
         - python3.8
@@ -22,7 +22,7 @@ provider:
   versionFunctions: false
   environment:
     REGION: ${self:provider.region}
-    STAGE: ${self:provider.stage}
+    STAGE: ${self:custom.stage}
     EMAIL_QUEUE: ${self:custom.emailQueue}
     SENDER_EMAIL: contact@sparcsup.com
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
