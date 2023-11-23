@@ -1,9 +1,11 @@
 import logging
 import os
-import jinja2
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from typing import List
+
+import jinja2
 
 from model.email import EmailIn
 from utils.utils import Utils
@@ -17,16 +19,25 @@ class EmailUsecase:
         self.logger = logging.getLogger()
 
     def create_email(
-        self, sender_email: str, to_email: str, subject: str, content: str, cc: str = None, bcc: str = None
+        self,
+        sender_email: str,
+        subject: str,
+        content: str,
+        to_email: List[str] = None,
+        cc: List[str] = None,
+        bcc: List[str] = None,
     ) -> MIMEMultipart:
         msg = MIMEMultipart()
         msg['From'] = sender_email
-        msg['To'] = ", ".join(to_email)
         msg['Subject'] = subject
-        if cc:
-            msg['Cc'] = ", ".join(cc)
-        if bcc:
-            msg['Bcc'] = ", ".join(bcc)
+
+        if to_email is not None:
+            msg['To'] = ", ".join(to_email) if len(to_email) > 1 else to_email[0]
+        if cc is not None:
+            msg['Cc'] = ", ".join(cc) if len(cc) > 1 else cc[0]
+        if bcc is not None:
+            msg['Bcc'] = ", ".join(bcc) if len(bcc) > 1 else bcc[0]
+
         msg.attach(MIMEText(content, 'html'))
         return msg
 
@@ -37,9 +48,15 @@ class EmailUsecase:
         cc_email = email_body.cc
         bcc_email = email_body.bcc
         subject = email_body.subject
-        
+        frontend_url = os.getenv('FRONTEND_URL')
+
         htmlTemplate = j2.from_string(email_body.content)
-        content = htmlTemplate.render(salutation=email_body.salutation, body = email_body.body, regards=email_body.regards)
+        content = htmlTemplate.render(
+            frontend_url=frontend_url,
+            salutation=email_body.salutation,
+            body=email_body.body,
+            regards=email_body.regards,
+        )
 
         try:
             with smtplib.SMTP('smtp.sendgrid.net', 587) as server:

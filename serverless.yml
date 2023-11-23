@@ -6,13 +6,20 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
   sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
+  frontendUrl:
+    dev: https://sparcs-event-platform-git-stage-sparcss-projects.vercel.app
+    prod: https://www.techtix.app
   pythonRequirements:
     dockerizePip: non-linux
+    noDeploy:
+      - requests
+      - boto3
+      - botocore
     layer:
       name: sparcs-events-${self:custom.stage}-python-requirements
-      path: .
       compatibleRuntimes:
         - python3.8
+    slim: true
 
 provider:
   name: aws
@@ -26,6 +33,7 @@ provider:
     EMAIL_QUEUE: ${self:custom.emailQueue}
     SENDER_EMAIL: contact@sparcsup.com
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
+    FRONTEND_URL: ${self:custom.frontendUrl.${self:custom.stage}}
 
 resources:
   - ${file(resources/sqs.yml)}
