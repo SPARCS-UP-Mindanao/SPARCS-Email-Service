@@ -1,4 +1,3 @@
-import logging
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -8,6 +7,7 @@ from typing import List
 import jinja2
 
 from model.email import EmailIn
+from utils.logger import logger
 from utils.utils import Utils
 
 
@@ -16,7 +16,6 @@ class EmailUsecase:
         self.sendgrid_api_key = Utils.get_secret(os.getenv('SENDGRID_API_KEY_NAME'))
         self.sender_email = os.getenv('SENDER_EMAIL')
         self.display_name = 'UP Mindanao SPARCS'
-        self.logger = logging.getLogger()
 
     def create_email(
         self,
@@ -74,7 +73,7 @@ class EmailUsecase:
                 server.sendmail(email_from, to_email, msg.as_string())
 
                 message = f'Email sent successfully to {to_email}!'
-                self.logger.info(message)
+                logger.info(message)
         except Exception as e:
             message = f'An error occurred while sending the email: {e}'
-            self.logger.error(message)
+            logger.error(message)
