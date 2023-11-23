@@ -5,6 +5,7 @@ import boto3
 
 from model.email import EmailIn
 from usecase.email_usecase import EmailUsecase
+
 EMAIL_QUEUE = os.getenv('EMAIL_QUEUE')
 SQS = boto3.client('sqs')
 email_usecase = EmailUsecase()
