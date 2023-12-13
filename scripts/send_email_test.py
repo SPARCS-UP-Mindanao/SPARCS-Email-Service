@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 
 from model.email import EmailIn
+from constants.common_constants import EmailType
 from usecase.email_usecase import EmailUsecase
 
 load_dotenv()
@@ -26,6 +27,8 @@ def send_email_test():
         body=body,
         salutation=salutation,
         regards=regards,
+        emailType=EmailType.REGISTRATION_EMAIL,
+        eventId="string",
     )
     email_usecase.send_email(email_body)
 

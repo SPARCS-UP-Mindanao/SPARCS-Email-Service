@@ -4,6 +4,7 @@ custom:
   projectName: sparcs-events
   serviceName: email
   stage: ${opt:stage, self:provider.stage}
+  registrations: ${self:custom.stage}-${self:custom.projectName}-registrations
   emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
   sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   frontendUrl:
@@ -34,6 +35,8 @@ provider:
     SENDER_EMAIL: contact@sparcsup.com
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
     FRONTEND_URL: ${self:custom.frontendUrl.${self:custom.stage}}
+    REGISTRATIONS_TABLE: ${self:custom.registrations}
+
 
 resources:
   - ${file(resources/sqs.yml)}

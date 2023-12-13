@@ -17,3 +17,8 @@ send-email:
         - ssm:GetParameter
       Resource:
         - arn:aws:ssm:*:*:parameter/${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations
