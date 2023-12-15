@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
+from constants.common_constants import EmailType
 from template.get_template import html_template
 
 
@@ -14,3 +15,5 @@ class EmailIn(BaseModel):
     content: str = Field(default=html_template())
     body: List[str] = Field(..., title="Body of the email")
     regards: List[str] = Field(..., title="Regards of the email")
+    emailType: EmailType = Field(..., title="Type of the email")
+    eventId: str = Field(..., title="Event ID of the email")

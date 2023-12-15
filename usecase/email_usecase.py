@@ -2,11 +2,15 @@ import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from http import HTTPStatus
 from typing import List
 
 import jinja2
 
+from constants.common_constants import EmailType
 from model.email import EmailIn
+from model.registrations.registration import RegistrationPatch
+from repository.registrations_repository import RegistrationsRepository
 from utils.logger import logger
 from utils.utils import Utils
 
@@ -16,6 +20,7 @@ class EmailUsecase:
         self.sendgrid_api_key = Utils.get_secret(os.getenv('SENDGRID_API_KEY_NAME'))
         self.sender_email = os.getenv('SENDER_EMAIL')
         self.display_name = 'UP Mindanao SPARCS'
+        self.registrations_repository = RegistrationsRepository()
 
     def create_email(
         self,
@@ -71,9 +76,36 @@ class EmailUsecase:
                     bcc=bcc_email,
                 )
                 server.sendmail(email_from, to_email, msg.as_string())
+                self.update_db_success_sent(email_body)
 
                 message = f'Email sent successfully to {to_email}!'
                 logger.info(message)
         except Exception as e:
             message = f'An error occurred while sending the email: {e}'
             logger.error(message)
+
+    def update_db_success_sent(self, email_body: EmailIn):
+        status, registrations, message = self.registrations_repository.query_registrations_with_email(
+            event_id=email_body.eventId,
+            email=email_body.to[0],
+        )
+        if status != HTTPStatus.OK:
+            logger.error(message)
+            return
+
+        registration_update_map = {
+            EmailType.REGISTRATION_EMAIL: RegistrationPatch(registrationEmailSent=True),
+            EmailType.CONFIRMATION_EMAIL: RegistrationPatch(confirmationEmailSent=True),
+            EmailType.EVALUATION_EMAIL: RegistrationPatch(evaluationEmailSent=True),
+        }
+        if update_obj := registration_update_map.get(email_body.emailType):
+            for registration in registrations:
+                status, registration, message = self.registrations_repository.update_registration(
+                    registration_entry=registration,
+                    registration_in=update_obj,
+                )
+                if status != HTTPStatus.OK:
+                    logger.error(message)
+                    return
+
+                logger.info(f'[{registration.registrationId}]: Update Registration successful')
