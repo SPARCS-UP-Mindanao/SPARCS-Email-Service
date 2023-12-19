@@ -41,7 +41,7 @@ class CommonConstants:
         UPDATED_BY,
         LATEST_VERSION,
     ]
-    
+
 
 class EmailType(str, Enum):
     REGISTRATION_EMAIL = 'registrationEmail'

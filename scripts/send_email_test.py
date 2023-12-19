@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 
-from model.email import EmailIn
 from constants.common_constants import EmailType
+from model.email import EmailIn
 from usecase.email_usecase import EmailUsecase
 
 load_dotenv()
