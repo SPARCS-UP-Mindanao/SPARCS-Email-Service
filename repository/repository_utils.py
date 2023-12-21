@@ -2,9 +2,10 @@ import json
 from copy import deepcopy
 from typing import Tuple
 
-from constants.common_constants import CommonConstants
 from pynamodb.attributes import MapAttribute
 from pynamodb.models import Model
+
+from constants.common_constants import CommonConstants
 
 
 class RepositoryUtils:
