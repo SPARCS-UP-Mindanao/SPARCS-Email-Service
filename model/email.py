@@ -15,5 +15,5 @@ class EmailIn(BaseModel):
     content: str = Field(default=html_template())
     body: List[str] = Field(..., title="Body of the email")
     regards: List[str] = Field(..., title="Regards of the email")
-    emailType: EmailType = Field(..., title="Type of the email")
-    eventId: str = Field(..., title="Event ID of the email")
+    emailType: EmailType = Field(None, title="Type of the email")
+    eventId: str = Field(None, title="Event ID of the email")
