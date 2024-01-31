@@ -4,8 +4,9 @@ Resources:
     Properties:
       QueueName: ${self:custom.emailQueue}
       FifoQueue: true
-      MessageRetentionPeriod: 1209600  # 14 days
+      MessageRetentionPeriod: 86400 # 1 day
       VisibilityTimeout: 900
+      ReceiveMessageWaitTimeSeconds: 20
 
 Outputs:
   EmailQueueUrl:
