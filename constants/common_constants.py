@@ -45,6 +45,7 @@ class CommonConstants:
 
 class EmailType(str, Enum):
     REGISTRATION_EMAIL = 'registrationEmail'
+    PREREGISTRATION_EMAIL = 'preRegistrationEmail'
     CONFIRMATION_EMAIL = 'confirmationEmail'
     EVALUATION_EMAIL = 'evaluationEmail'
     EVENT_CREATION_EMAIL = 'eventCreationEmail'
