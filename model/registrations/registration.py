@@ -67,6 +67,7 @@ class Registration(Model):
     registrationEmailSent = BooleanAttribute(default=False)
     confirmationEmailSent = BooleanAttribute(default=False)
     evaluationEmailSent = BooleanAttribute(default=False)
+    certificateGenerated = BooleanAttribute(default=False)
 
 
 class RegistrationPatch(BaseModel):

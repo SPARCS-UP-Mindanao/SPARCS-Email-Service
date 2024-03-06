@@ -1,4 +1,3 @@
-import logging
 import os
 from datetime import datetime
 from http import HTTPStatus
@@ -17,6 +16,7 @@ from pynamodb.transactions import TransactWrite
 from constants.common_constants import EntryStatus
 from model.registrations.registration import Registration, RegistrationIn
 from repository.repository_utils import RepositoryUtils
+from utils.logger import logger
 
 
 class RegistrationsRepository:
@@ -76,32 +76,32 @@ class RegistrationsRepository:
             if not registration_entries:
                 if registration_id:
                     message = f'Registration with id {registration_id} not found'
-                    logging.error(f'[{self.core_obj}={registration_id}] {message}')
+                    logger.error(f'[{self.core_obj}={registration_id}] {message}')
                 else:
                     message = 'No registration found'
-                    logging.error(f'[{self.core_obj}] {message}')
+                    logger.error(f'[{self.core_obj}] {message}')
 
                 return HTTPStatus.NOT_FOUND, None, message
 
         except QueryError as e:
             message = f'Failed to query registration: {str(e)}'
-            logging.error(f'[{self.core_obj} = {registration_id}]: {message}')
+            logger.error(f'[{self.core_obj} = {registration_id}]: {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
         except TableDoesNotExist as db_error:
             message = f'Error on Table, Please check config to make sure table is created: {str(db_error)}'
-            logging.error(f'[{self.core_obj} = {registration_id}]: {message}')
+            logger.error(f'[{self.core_obj} = {registration_id}]: {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
 
         except PynamoDBConnectionError as db_error:
             message = f'Connection error occurred, Please check config(region, table name, etc): {str(db_error)}'
-            logging.error(f'[{self.core_obj} = {registration_id}]: {message}')
+            logger.error(f'[{self.core_obj} = {registration_id}]: {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
         else:
             if registration_id:
-                logging.info(f'[{self.core_obj} = {registration_id}]: Fetch Registration data successful')
+                logger.info(f'[{self.core_obj} = {registration_id}]: Fetch Registration data successful')
                 return HTTPStatus.OK, registration_entries[0], None
 
-            logging.info(f'[{self.core_obj}]: Fetch Registration data successful')
+            logger.info(f'[{self.core_obj}]: Fetch Registration data successful')
             return HTTPStatus.OK, registration_entries, None
 
     def query_registrations_with_email(
@@ -134,26 +134,26 @@ class RegistrationsRepository:
 
             if not registration_entries:
                 message = f'Registration with email {email} not found'
-                logging.error(f'[{self.core_obj}={email}] {message}')
+                logger.error(f'[{self.core_obj}={email}] {message}')
 
                 return HTTPStatus.NOT_FOUND, None, message
 
         except QueryError as e:
             message = f'Failed to query registrations: {str(e)}'
-            logging.error(f'[{self.core_obj} = {email}]: {message}')
+            logger.error(f'[{self.core_obj} = {email}]: {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
 
         except TableDoesNotExist as db_error:
             message = f'Error on Table, Please check config to make sure table is created: {str(db_error)}'
-            logging.error(f'[{self.core_obj} = {email}]: {message}')
+            logger.error(f'[{self.core_obj} = {email}]: {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
 
         except PynamoDBConnectionError as db_error:
             message = f'Connection error occurred, Please check config(region, table name, etc): {str(db_error)}'
-            logging.error(f'[{self.core_obj} = {email}]: {message}')
+            logger.error(f'[{self.core_obj} = {email}]: {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
         else:
-            logging.info(f'[{self.core_obj}]: Fetch Registration with email successful')
+            logger.info(f'[{self.core_obj}]: Fetch Registration with email {email} successful')
             return HTTPStatus.OK, registration_entries, None
 
     def update_registration(
@@ -187,12 +187,12 @@ class RegistrationsRepository:
                 transaction.update(registration_entry, actions=actions)
 
             registration_entry.refresh()
-            logging.info(f'[{registration_entry.rangeKey}] ' f'Update event data succesful')
+            logger.info(f'[{registration_entry.rangeKey}] ' f'Update event data succesful')
             return HTTPStatus.OK, registration_entry, ''
 
         except TransactWriteError as e:
             message = f'Failed to update event data: {str(e)}'
-            logging.error(f'[{registration_entry.rangeKey}] {message}')
+            logger.error(f'[{registration_entry.rangeKey}] {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
 
     def delete_registration(self, registration_entry: Registration) -> HTTPStatus:
@@ -207,10 +207,10 @@ class RegistrationsRepository:
         """
         try:
             registration_entry.delete()
-            logging.info(f'[{registration_entry.rangeKey}] ' f'Delete event data successful')
-            return HTTPStatus.OK, None
+            logger.info(f'[{registration_entry.rangeKey}] ' f'Delete event data successful')
+            return HTTPStatus.OK
 
         except DeleteError as e:
             message = f'Failed to delete event data: {str(e)}'
-            logging.error(f'[{registration_entry.rangeKey}] {message}')
+            logger.error(f'[{registration_entry.rangeKey}] {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR
