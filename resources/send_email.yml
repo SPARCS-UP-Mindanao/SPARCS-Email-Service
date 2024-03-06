@@ -22,4 +22,3 @@ send-email:
         - dynamodb:*
       Resource:
         - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations
-        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations/index/*
