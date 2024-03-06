@@ -9,7 +9,7 @@ import jinja2
 
 from constants.common_constants import EmailType
 from model.email import EmailIn
-from model.registrations.registration import RegistrationPatch
+from model.registrations.registration import RegistrationIn
 from repository.registrations_repository import RegistrationsRepository
 from utils.logger import logger
 from utils.utils import Utils
@@ -94,9 +94,9 @@ class EmailUsecase:
             return
 
         registration_update_map = {
-            EmailType.REGISTRATION_EMAIL: RegistrationPatch(registrationEmailSent=True),
-            EmailType.CONFIRMATION_EMAIL: RegistrationPatch(confirmationEmailSent=True),
-            EmailType.EVALUATION_EMAIL: RegistrationPatch(evaluationEmailSent=True),
+            EmailType.REGISTRATION_EMAIL.value: RegistrationIn(registrationEmailSent=True),
+            EmailType.CONFIRMATION_EMAIL.value: RegistrationIn(confirmationEmailSent=True),
+            EmailType.EVALUATION_EMAIL.value: RegistrationIn(evaluationEmailSent=True),
         }
         if update_obj := registration_update_map.get(email_body.emailType):
             for registration in registrations:

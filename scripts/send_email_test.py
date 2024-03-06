@@ -27,7 +27,7 @@ def send_email_test():
         body=body,
         salutation=salutation,
         regards=regards,
-        emailType=EmailType.REGISTRATION_EMAIL,
+        emailType=EmailType.REGISTRATION_EMAIL.value,
         eventId="string",
     )
     email_usecase.send_email(email_body)
