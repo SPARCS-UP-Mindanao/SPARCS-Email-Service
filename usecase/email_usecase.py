@@ -62,59 +62,59 @@ class EmailUsecase:
             regards=email_body.regards,
         )
 
-        # try:
-        with smtplib.SMTP('smtp.sendgrid.net', 587) as server:
-            server.starttls()
-            server.login('apikey', self.sendgrid_api_key)
+        try:
+            with smtplib.SMTP('smtp.sendgrid.net', 587) as server:
+                server.starttls()
+                server.login('apikey', self.sendgrid_api_key)
 
-            msg = self.create_email(
-                sender_email=email_from,
-                to_email=to_email,
-                subject=subject,
-                content=content,
-                cc=cc_email,
-                bcc=bcc_email,
-            )
-            server.sendmail(email_from, to_email, msg.as_string())
-            self.update_db_success_sent(email_body)
+                msg = self.create_email(
+                    sender_email=email_from,
+                    to_email=to_email,
+                    subject=subject,
+                    content=content,
+                    cc=cc_email,
+                    bcc=bcc_email,
+                )
+                server.sendmail(email_from, to_email, msg.as_string())
+                self.update_db_success_sent(email_body)
 
-            message = f'Email sent successfully to {to_email}!'
-            logger.info(message)
-        # except Exception as e:
-        #     message = f'An error occurred while sending the email: {e}'
-        #     logger.error(message)
+                message = f'Email sent successfully to {to_email}!'
+                logger.info(message)
+        except Exception as e:
+            message = f'An error occurred while sending the email: {e}'
+            logger.error(message)
 
     def update_db_success_sent(self, email_body: EmailIn):
-        # try:
-        status, registrations, message = self.registrations_repository.query_registrations_with_email(
-            event_id=email_body.eventId,
-            email=email_body.to[0],
-        )
-        if status != HTTPStatus.OK:
+        try:
+            status, registrations, message = self.registrations_repository.query_registrations_with_email(
+                event_id=email_body.eventId,
+                email=email_body.to[0],
+            )
+            if status != HTTPStatus.OK:
+                logger.error(message)
+                return
+
+            registration_update_map = {
+                EmailType.REGISTRATION_EMAIL.value: RegistrationIn(registrationEmailSent=True),
+                EmailType.CONFIRMATION_EMAIL.value: RegistrationIn(confirmationEmailSent=True),
+                EmailType.EVALUATION_EMAIL.value: RegistrationIn(evaluationEmailSent=True),
+            }
+            if update_obj := registration_update_map.get(email_body.emailType):
+                for registration in registrations:
+                    if not registration:
+                        continue
+
+                    status, _, message = self.registrations_repository.update_registration(
+                        registration_entry=registration,
+                        registration_in=update_obj,
+                    )
+                    if status != HTTPStatus.OK:
+                        logger.error(message)
+                        return
+
+                    logger.info(f'[{registration.registrationId}]: Update Registration successful')
+
+        except Exception as e:
+            message = f'An error occurred while updating the database: {e}'
             logger.error(message)
             return
-
-        registration_update_map = {
-            EmailType.REGISTRATION_EMAIL.value: RegistrationIn(registrationEmailSent=True),
-            EmailType.CONFIRMATION_EMAIL.value: RegistrationIn(confirmationEmailSent=True),
-            EmailType.EVALUATION_EMAIL.value: RegistrationIn(evaluationEmailSent=True),
-        }
-        if update_obj := registration_update_map.get(email_body.emailType):
-            for registration in registrations:
-                if not registration:
-                    continue
-
-                status, _, message = self.registrations_repository.update_registration(
-                    registration_entry=registration,
-                    registration_in=update_obj,
-                )
-                if status != HTTPStatus.OK:
-                    logger.error(message)
-                    return
-
-                logger.info(f'[{registration.registrationId}]: Update Registration successful')
-
-        # except Exception as e:
-        #     message = f'An error occurred while updating the database: {e}'
-        #     logger.error(message)
-        #     return
