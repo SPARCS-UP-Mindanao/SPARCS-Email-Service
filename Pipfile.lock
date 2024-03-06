@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bb1330f820d623777873856af28febbc0c7e31b7f2af950906e531dcb165dcdf"
+            "sha256": "ebc55d2294cc053634aad1367d00aa06a83eab592540cd220374621fdf19e1f5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -230,11 +230,11 @@
         },
         "pynamodb": {
             "hashes": [
-                "sha256:bb93bd86061c91508c44668c219d51d080d011f665153fa9a471ced06b2f2ee7",
-                "sha256:c7a9c557b52364bc09257edd00378eebc75258bbdaa0fe050fcce2356149f90a"
+                "sha256:0926b04b79a40e1ebf46491dc5aadc1a9b6cfcc0c3dec3650df54d0d70e26098",
+                "sha256:7df038b847bbf9da9c3412fab96a4e889db6a5322344494fc1090810313bea20"
             ],
             "index": "pypi",
-            "version": "==5.2.1"
+            "version": "==5.2.2"
         },
         "python-dateutil": {
             "hashes": [
