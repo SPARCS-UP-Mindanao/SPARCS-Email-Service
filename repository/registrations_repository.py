@@ -170,6 +170,8 @@ class RegistrationsRepository:
             Tuple[HTTPStatus, Registration, str]: A tuple containing HTTP status, the updated registration record,
             and an optional error message.
         """
+        logger.info(f'registration_entry: {registration_entry}')
+        logger.info(f'registration_in: {registration_in}' )
         data = RepositoryUtils.load_data(pydantic_schema_in=registration_in, exclude_unset=True)
         has_update, updated_data = RepositoryUtils.get_update(
             old_data=RepositoryUtils.db_model_to_dict(registration_entry), new_data=data
