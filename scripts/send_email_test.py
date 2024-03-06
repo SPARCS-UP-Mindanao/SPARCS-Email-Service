@@ -9,7 +9,12 @@ load_dotenv()
 
 def send_email_test():
     email_usecase = EmailUsecase()
-
+    email_data = {"to": ["rneljan@gmail.com"], "cc": None, "bcc": None,
+                  "subject": "UXplore Test Registration Confirmation",
+                  "salutation": "Good day asdasd,", "body": ["Thank you for registering for the upcoming UXplore Test!",
+                                                             "We\'re thrilled to have you join us. If you have any questions or need assistance, please don\'t hesitate to reach out to us. We\'re here to help!",
+                                                             "See you soon!"], "regards": ["Best,"],
+                  "emailType": "registrationEmail", "eventId": "uxplore-test"}
     event_name = "SPARCS Career Talks 2023"
     subject = f"Thank you for joining {event_name}. Claim your certificate now!"
     claim_certificate_url = "https://techtix.app/career-talks-2023/evaluate"
@@ -22,13 +27,7 @@ def send_email_test():
     ]
     regards = ["Best,", "SPARCS Team"]
     email_body = EmailIn(
-        to=['rneljan@gmail.com'],
-        subject=subject,
-        body=body,
-        salutation=salutation,
-        regards=regards,
-        emailType=EmailType.REGISTRATION_EMAIL.value,
-        eventId="uxplore-test",
+        **email_data
     )
     email_usecase.send_email(email_body)
 
