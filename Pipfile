@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 Cython = "==0.29.33"  # Add this for mac os users
-pynamodb = "==5.2.1"
+pynamodb = "==5.3.2"
 boto3 = "==1.22.7"
 pydantic = {version = "<2", extras = ["email"]}
 python-dotenv = "==1.0.0"
