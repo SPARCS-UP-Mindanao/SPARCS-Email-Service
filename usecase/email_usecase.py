@@ -101,7 +101,10 @@ class EmailUsecase:
             }
             if update_obj := registration_update_map.get(email_body.emailType):
                 for registration in registrations:
-                    status, registration, message = self.registrations_repository.update_registration(
+                    if not registration:
+                        continue
+
+                    status, _, message = self.registrations_repository.update_registration(
                         registration_entry=registration,
                         registration_in=update_obj,
                     )
@@ -110,6 +113,7 @@ class EmailUsecase:
                         return
 
                     logger.info(f'[{registration.registrationId}]: Update Registration successful')
+
         except Exception as e:
             message = f'An error occurred while updating the database: {e}'
             logger.error(message)
