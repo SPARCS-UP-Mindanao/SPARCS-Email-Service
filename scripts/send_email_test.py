@@ -28,7 +28,7 @@ def send_email_test():
         salutation=salutation,
         regards=regards,
         emailType=EmailType.REGISTRATION_EMAIL.value,
-        eventId="string",
+        eventId="uxplore-test",
     )
     email_usecase.send_email(email_body)
 

@@ -85,27 +85,32 @@ class EmailUsecase:
             logger.error(message)
 
     def update_db_success_sent(self, email_body: EmailIn):
-        status, registrations, message = self.registrations_repository.query_registrations_with_email(
-            event_id=email_body.eventId,
-            email=email_body.to[0],
-        )
-        if status != HTTPStatus.OK:
+        try:
+            status, registrations, message = self.registrations_repository.query_registrations_with_email(
+                event_id=email_body.eventId,
+                email=email_body.to[0],
+            )
+            if status != HTTPStatus.OK:
+                logger.error(message)
+                return
+
+            registration_update_map = {
+                EmailType.REGISTRATION_EMAIL.value: RegistrationIn(registrationEmailSent=True),
+                EmailType.CONFIRMATION_EMAIL.value: RegistrationIn(confirmationEmailSent=True),
+                EmailType.EVALUATION_EMAIL.value: RegistrationIn(evaluationEmailSent=True),
+            }
+            if update_obj := registration_update_map.get(email_body.emailType):
+                for registration in registrations:
+                    status, registration, message = self.registrations_repository.update_registration(
+                        registration_entry=registration,
+                        registration_in=update_obj,
+                    )
+                    if status != HTTPStatus.OK:
+                        logger.error(message)
+                        return
+
+                    logger.info(f'[{registration.registrationId}]: Update Registration successful')
+        except Exception as e:
+            message = f'An error occurred while updating the database: {e}'
             logger.error(message)
             return
-
-        registration_update_map = {
-            EmailType.REGISTRATION_EMAIL.value: RegistrationIn(registrationEmailSent=True),
-            EmailType.CONFIRMATION_EMAIL.value: RegistrationIn(confirmationEmailSent=True),
-            EmailType.EVALUATION_EMAIL.value: RegistrationIn(evaluationEmailSent=True),
-        }
-        if update_obj := registration_update_map.get(email_body.emailType):
-            for registration in registrations:
-                status, registration, message = self.registrations_repository.update_registration(
-                    registration_entry=registration,
-                    registration_in=update_obj,
-                )
-                if status != HTTPStatus.OK:
-                    logger.error(message)
-                    return
-
-                logger.info(f'[{registration.registrationId}]: Update Registration successful')
