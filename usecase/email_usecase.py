@@ -18,6 +18,10 @@ from utils.utils import Utils
 class EmailUsecase:
     def __init__(self):
         self.sendgrid_api_key = Utils.get_secret(os.getenv('SENDGRID_API_KEY_NAME'))
+        self.sendgrid_smtp_host = 'smtp.sendgrid.net'
+        self.ses_smtp_username = Utils.get_secret(os.getenv('SES_SMTP_USERNAME_KEY'))
+        self.ses_smtp_password = Utils.get_secret(os.getenv('SES_SMTP_PASSWORD_KEY'))
+        self.ses_smtp_host = os.getenv('SES_SMTP_HOST')
         self.sender_email = os.getenv('SENDER_EMAIL')
         self.display_name = 'UP Mindanao SPARCS'
         self.registrations_repository = RegistrationsRepository()
@@ -61,25 +65,63 @@ class EmailUsecase:
             body=email_body.body,
             regards=email_body.regards,
         )
+        msg = self.create_email(
+            sender_email=email_from,
+            to_email=to_email,
+            subject=subject,
+            content=content,
+            cc=cc_email,
+            bcc=bcc_email,
+        )
 
+        if email_body.useBackupSMTP:
+            self.send_ses_email(
+                msg=msg,
+                email_from=email_from,
+                to_email=to_email,
+                email_body=email_body,
+            )
+
+        else:
+            self.send_sendgrid_email(
+                msg=msg,
+                email_from=email_from,
+                to_email=to_email,
+                email_body=email_body,
+            )
+
+    def send_sendgrid_email(self, msg: MIMEMultipart, email_from: str, to_email: List[str], email_body: EmailIn):
         try:
-            with smtplib.SMTP('smtp.sendgrid.net', 587) as server:
+            with smtplib.SMTP(self.sendgrid_smtp_host, 587) as server:
                 server.starttls()
                 server.login('apikey', self.sendgrid_api_key)
 
-                msg = self.create_email(
-                    sender_email=email_from,
-                    to_email=to_email,
-                    subject=subject,
-                    content=content,
-                    cc=cc_email,
-                    bcc=bcc_email,
-                )
                 server.sendmail(email_from, to_email, msg.as_string())
                 self.update_db_success_sent(email_body)
 
-                message = f'Email sent successfully to {to_email}!'
+                message = f'Email sent successfully to {to_email} via SendGrid!'
                 logger.info(message)
+
+                server.close()
+
+        except Exception as e:
+            message = f'An error occurred while sending the email: {e}'
+            logger.error(message)
+
+    def send_ses_email(self, msg: MIMEMultipart, email_from: str, to_email: List[str], email_body: EmailIn):
+        try:
+            with smtplib.SMTP(self.ses_smtp_host, 587) as server:
+                server.starttls()
+                server.login(self.ses_smtp_username, self.ses_smtp_password)
+
+                server.sendmail(email_from, to_email, msg.as_string())
+                self.update_db_success_sent(email_body)
+
+                message = f'Email sent successfully to {to_email} via AWS SES!'
+                logger.info(message)
+
+                server.close()
+
         except Exception as e:
             message = f'An error occurred while sending the email: {e}'
             logger.error(message)
