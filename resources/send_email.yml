@@ -16,7 +16,9 @@ send-email:
       Action:
         - ssm:GetParameter
       Resource:
-        - arn:aws:ssm:*:*:parameter/${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
+        - arn:aws:ssm:*:*:parameter/${self:custom.sendgridApiKeyName}
+        - arn:aws:ssm:*:*:parameter/${self:custom.smtpUsernameKey}
+        - arn:aws:ssm:*:*:parameter/${self:custom.smtpPasswordKey}
     - Effect: Allow
       Action:
         - dynamodb:*

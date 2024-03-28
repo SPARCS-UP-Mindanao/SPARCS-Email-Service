@@ -10,6 +10,8 @@ custom:
   frontendUrl:
     dev: https://sparcs-event-platform-git-stage-sparcss-projects.vercel.app
     prod: https://www.techtix.app
+  smtpUsernameKey: ${self:custom.projectName}-techtix-smtp-username
+  smtpPasswordKey: ${self:custom.projectName}-techtix-smtp-password
   pythonRequirements:
     dockerizePip: non-linux
     noDeploy:
@@ -36,6 +38,9 @@ provider:
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
     FRONTEND_URL: ${self:custom.frontendUrl.${self:custom.stage}}
     REGISTRATIONS_TABLE: ${self:custom.registrations}
+    SES_SMTP_USERNAME_KEY: ${self:custom.smtpUsernameKey}
+    SES_SMTP_PASSWORD_KEY: ${self:custom.smtpPasswordKey}
+    SES_SMTP_HOST: email-smtp.ap-southeast-1.amazonaws.com
 
 
 resources:
