@@ -22,6 +22,7 @@ def send_email_test():
         "regards": ["Best,"],
         "emailType": "registrationEmail",
         "eventId": "uxplore-test",
+        "useBackupSMTP": False,
     }
     email_body = EmailIn(**email_data)
     email_usecase.send_email(email_body)
