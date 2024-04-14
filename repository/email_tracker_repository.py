@@ -82,7 +82,9 @@ class EmailTrackersRepository:
             return HTTPStatus.OK, email_tracker_entries[0], None
 
     def create_update_email_tracker(
-        self, email_tracker_in: EmailTrackerIn, email_tracker_entry: Optional[EmailTracker] = None
+        self,
+        email_tracker_in: EmailTrackerIn,
+        email_tracker_entry: Optional[EmailTracker] = None,
     ) -> Tuple[HTTPStatus, EmailTracker, str]:
         """
         Update a email_tracker record in the database.
@@ -120,7 +122,8 @@ class EmailTrackersRepository:
                 logger.info(f'[{self.core_obj}] ' f'Updating new email_tracker entry')
                 data = RepositoryUtils.load_data(pydantic_schema_in=email_tracker_in, exclude_unset=True)
                 has_update, updated_data = RepositoryUtils.get_update(
-                    old_data=RepositoryUtils.db_model_to_dict(email_tracker_entry), new_data=data
+                    old_data=RepositoryUtils.db_model_to_dict(email_tracker_entry),
+                    new_data=data,
                 )
                 if not has_update:
                     return HTTPStatus.OK, email_tracker_entry, 'No update'
