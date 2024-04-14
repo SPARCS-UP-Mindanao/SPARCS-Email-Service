@@ -1,15 +1,18 @@
 import os
 import smtplib
+from datetime import datetime, timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from http import HTTPStatus
 from typing import List
 
 import jinja2
+from dateutil.parser import parse
 
 from constants.common_constants import EmailType
-from model.email import EmailIn
+from model.email.email import EmailIn, EmailTrackerIn
 from model.registrations.registration import RegistrationIn
+from repository.email_tracker_repository import EmailTrackersRepository
 from repository.registrations_repository import RegistrationsRepository
 from utils.logger import logger
 from utils.utils import Utils
@@ -25,6 +28,8 @@ class EmailUsecase:
         self.sender_email = os.getenv('SENDER_EMAIL')
         self.display_name = 'UP Mindanao SPARCS'
         self.registrations_repository = RegistrationsRepository()
+        self.email_tracker_repository = EmailTrackersRepository()
+        self.datetime_now = datetime.now(timezone.utc)
 
     def create_email(
         self,
@@ -36,27 +41,27 @@ class EmailUsecase:
         bcc: List[str] = None,
     ) -> MIMEMultipart:
         msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['Subject'] = subject
+        msg["From"] = sender_email
+        msg["Subject"] = subject
 
         if to_email is not None:
-            msg['To'] = ", ".join(to_email) if len(to_email) > 1 else to_email[0]
+            msg["To"] = ", ".join(to_email) if len(to_email) > 1 else to_email[0]
         if cc is not None:
-            msg['Cc'] = ", ".join(cc) if len(cc) > 1 else cc[0]
+            msg["Cc"] = ", ".join(cc) if len(cc) > 1 else cc[0]
         if bcc is not None:
-            msg['Bcc'] = ", ".join(bcc) if len(bcc) > 1 else bcc[0]
+            msg["Bcc"] = ", ".join(bcc) if len(bcc) > 1 else bcc[0]
 
-        msg.attach(MIMEText(content, 'html'))
+        msg.attach(MIMEText(content, "html"))
         return msg
 
     def send_email(self, email_body: EmailIn):
         j2 = jinja2.Environment()
-        email_from = f'{self.display_name} <{self.sender_email}>'
+        email_from = f"{self.display_name} <{self.sender_email}>"
         to_email = email_body.to
         cc_email = email_body.cc
         bcc_email = email_body.bcc
         subject = email_body.subject
-        frontend_url = os.getenv('FRONTEND_URL')
+        frontend_url = os.getenv("FRONTEND_URL")
 
         htmlTemplate = j2.from_string(email_body.content)
         content = htmlTemplate.render(
@@ -74,7 +79,50 @@ class EmailUsecase:
             bcc=bcc_email,
         )
 
-        if email_body.useBackupSMTP:
+        smtp_service_daily_free_tier_limit = 100
+        email_len = 1
+
+        # Calculate the number of emails to send
+        status, email_tracker, _ = self.email_tracker_repository.query_email_tracker()
+        if status != HTTPStatus.OK:
+            event_update = EmailTrackerIn(
+                lastEmailSent=self.datetime_now,
+                dailyEmailCount=0,
+            )
+            _, email_tracker, _ = self.email_tracker_repository.create_update_email_tracker(
+                email_tracker_in=event_update,
+            )
+
+        # Check free tier limit refresh time
+        last_email_sent = parse(email_tracker.lastEmailSent)
+        if last_email_sent.tzinfo is None:
+            last_email_sent = last_email_sent.replace(tzinfo=timezone.utc)
+
+        print(self.datetime_now, last_email_sent, (self.datetime_now - last_email_sent).days)
+        one_day_passed = (self.datetime_now - last_email_sent).days >= 1
+
+        # Check emails sent
+        curent_daily_email_count = 0 if one_day_passed else email_tracker.dailyEmailCount
+        total_email_count = curent_daily_email_count + email_len
+        use_backup_smtp = total_email_count > smtp_service_daily_free_tier_limit
+
+        # Update daily email count
+        if one_day_passed:
+            event_update = EmailTrackerIn(
+                lastEmailSent=self.datetime_now,
+                dailyEmailCount=email_len,
+            )
+            self.email_tracker_repository.create_update_email_tracker(
+                email_tracker_entry=email_tracker,
+                email_tracker_in=event_update,
+            )
+
+        else:
+            self.email_tracker_repository.append_email_sent_count(email_tracker_entry=email_tracker)
+
+        # Send emails
+        if use_backup_smtp:
+            logger.info("Using AWS SES as backup SMTP")
             self.send_ses_email(
                 msg=msg,
                 email_from=email_from,
@@ -83,6 +131,7 @@ class EmailUsecase:
             )
 
         else:
+            logger.info("Using SendGrid as primary SMTP")
             self.send_sendgrid_email(
                 msg=msg,
                 email_from=email_from,
@@ -90,25 +139,37 @@ class EmailUsecase:
                 email_body=email_body,
             )
 
-    def send_sendgrid_email(self, msg: MIMEMultipart, email_from: str, to_email: List[str], email_body: EmailIn):
+    def send_sendgrid_email(
+        self,
+        msg: MIMEMultipart,
+        email_from: str,
+        to_email: List[str],
+        email_body: EmailIn,
+    ):
         try:
             with smtplib.SMTP(self.sendgrid_smtp_host, 587) as server:
                 server.starttls()
-                server.login('apikey', self.sendgrid_api_key)
+                server.login("apikey", self.sendgrid_api_key)
 
                 server.sendmail(email_from, to_email, msg.as_string())
                 self.update_db_success_sent(email_body)
 
-                message = f'Email sent successfully to {to_email} via SendGrid!'
+                message = f"Email sent successfully to {to_email} via SendGrid!"
                 logger.info(message)
 
                 server.close()
 
         except Exception as e:
-            message = f'An error occurred while sending the email: {e}'
+            message = f"An error occurred while sending the email: {e}"
             logger.error(message)
 
-    def send_ses_email(self, msg: MIMEMultipart, email_from: str, to_email: List[str], email_body: EmailIn):
+    def send_ses_email(
+        self,
+        msg: MIMEMultipart,
+        email_from: str,
+        to_email: List[str],
+        email_body: EmailIn,
+    ):
         try:
             with smtplib.SMTP(self.ses_smtp_host, 587) as server:
                 server.starttls()
@@ -117,13 +178,13 @@ class EmailUsecase:
                 server.sendmail(email_from, to_email, msg.as_string())
                 self.update_db_success_sent(email_body)
 
-                message = f'Email sent successfully to {to_email} via AWS SES!'
+                message = f"Email sent successfully to {to_email} via AWS SES!"
                 logger.info(message)
 
                 server.close()
 
         except Exception as e:
-            message = f'An error occurred while sending the email: {e}'
+            message = f"An error occurred while sending the email: {e}"
             logger.error(message)
 
     def update_db_success_sent(self, email_body: EmailIn):
@@ -154,9 +215,9 @@ class EmailUsecase:
                         logger.error(message)
                         return
 
-                    logger.info(f'[{registration.registrationId}]: Update Registration successful')
+                    logger.info(f"[{registration.registrationId}]: Update Registration successful")
 
         except Exception as e:
-            message = f'An error occurred while updating the database: {e}'
+            message = f"An error occurred while updating the database: {e}"
             logger.error(message)
             return

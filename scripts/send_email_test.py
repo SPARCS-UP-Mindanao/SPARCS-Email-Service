@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-from model.email import EmailIn
+from model.email.email import EmailIn
 from usecase.email_usecase import EmailUsecase
 
 load_dotenv()
