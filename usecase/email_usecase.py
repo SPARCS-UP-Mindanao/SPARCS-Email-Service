@@ -41,27 +41,27 @@ class EmailUsecase:
         bcc: List[str] = None,
     ) -> MIMEMultipart:
         msg = MIMEMultipart()
-        msg["From"] = sender_email
-        msg["Subject"] = subject
+        msg['From'] = sender_email
+        msg['Subject'] = subject
 
         if to_email is not None:
-            msg["To"] = ", ".join(to_email) if len(to_email) > 1 else to_email[0]
+            msg['To'] = ', '.join(to_email) if len(to_email) > 1 else to_email[0]
         if cc is not None:
-            msg["Cc"] = ", ".join(cc) if len(cc) > 1 else cc[0]
+            msg['Cc'] = ', '.join(cc) if len(cc) > 1 else cc[0]
         if bcc is not None:
-            msg["Bcc"] = ", ".join(bcc) if len(bcc) > 1 else bcc[0]
+            msg['Bcc'] = ', '.join(bcc) if len(bcc) > 1 else bcc[0]
 
-        msg.attach(MIMEText(content, "html"))
+        msg.attach(MIMEText(content, 'html'))
         return msg
 
     def send_email(self, email_body: EmailIn):
         j2 = jinja2.Environment()
-        email_from = f"{self.display_name} <{self.sender_email}>"
+        email_from = f'{self.display_name} <{self.sender_email}>'
         to_email = email_body.to
         cc_email = email_body.cc
         bcc_email = email_body.bcc
         subject = email_body.subject
-        frontend_url = os.getenv("FRONTEND_URL")
+        frontend_url = os.getenv('FRONTEND_URL')
 
         htmlTemplate = j2.from_string(email_body.content)
         content = htmlTemplate.render(
@@ -89,7 +89,11 @@ class EmailUsecase:
                 lastEmailSent=self.datetime_now,
                 dailyEmailCount=0,
             )
-            _, email_tracker, _ = self.email_tracker_repository.create_update_email_tracker(
+            (
+                _,
+                email_tracker,
+                _,
+            ) = self.email_tracker_repository.create_update_email_tracker(
                 email_tracker_in=event_update,
             )
 
@@ -121,7 +125,7 @@ class EmailUsecase:
 
         # Send emails
         if use_backup_smtp:
-            logger.info("Using AWS SES as backup SMTP")
+            logger.info('Using AWS SES as backup SMTP')
             self.send_ses_email(
                 msg=msg,
                 email_from=email_from,
@@ -130,7 +134,7 @@ class EmailUsecase:
             )
 
         else:
-            logger.info("Using SendGrid as primary SMTP")
+            logger.info('Using SendGrid as primary SMTP')
             self.send_sendgrid_email(
                 msg=msg,
                 email_from=email_from,
@@ -148,19 +152,19 @@ class EmailUsecase:
         try:
             with smtplib.SMTP(self.sendgrid_smtp_host, 587) as server:
                 server.starttls()
-                server.login("apikey", self.sendgrid_api_key)
+                server.login('apikey', self.sendgrid_api_key)
 
                 server.sendmail(email_from, to_email, msg.as_string())
                 if email_body.eventId:
                     self.update_db_success_sent(email_body)
 
-                message = f"Email sent successfully to {to_email} via SendGrid!"
+                message = f'Email sent successfully to {to_email} via SendGrid!'
                 logger.info(message)
 
                 server.close()
 
         except Exception as e:
-            message = f"An error occurred while sending the email: {e}"
+            message = f'An error occurred while sending the email: {e}'
             logger.error(message)
 
     def send_ses_email(
@@ -179,18 +183,22 @@ class EmailUsecase:
                 if email_body.eventId:
                     self.update_db_success_sent(email_body)
 
-                message = f"Email sent successfully to {to_email} via AWS SES!"
+                message = f'Email sent successfully to {to_email} via AWS SES!'
                 logger.info(message)
 
                 server.close()
 
         except Exception as e:
-            message = f"An error occurred while sending the email: {e}"
+            message = f'An error occurred while sending the email: {e}'
             logger.error(message)
 
     def update_db_success_sent(self, email_body: EmailIn):
         try:
-            status, registrations, message = self.registrations_repository.query_registrations_with_email(
+            (
+                status,
+                registrations,
+                message,
+            ) = self.registrations_repository.query_registrations_with_email(
                 event_id=email_body.eventId,
                 email=email_body.to[0],
             )
@@ -208,7 +216,11 @@ class EmailUsecase:
                     if not registration:
                         continue
 
-                    status, _, message = self.registrations_repository.update_registration(
+                    (
+                        status,
+                        _,
+                        message,
+                    ) = self.registrations_repository.update_registration(
                         registration_entry=registration,
                         registration_in=update_obj,
                     )
@@ -216,9 +228,9 @@ class EmailUsecase:
                         logger.error(message)
                         return
 
-                    logger.info(f"[{registration.registrationId}]: Update Registration successful")
+                    logger.info(f'[{registration.registrationId}]: Update Registration successful')
 
         except Exception as e:
-            message = f"An error occurred while updating the database: {e}"
+            message = f'An error occurred while updating the database: {e}'
             logger.error(message)
             return
