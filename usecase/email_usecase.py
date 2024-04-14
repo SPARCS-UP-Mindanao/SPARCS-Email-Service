@@ -98,7 +98,6 @@ class EmailUsecase:
         if last_email_sent.tzinfo is None:
             last_email_sent = last_email_sent.replace(tzinfo=timezone.utc)
 
-        print(self.datetime_now, last_email_sent, (self.datetime_now - last_email_sent).days)
         one_day_passed = (self.datetime_now - last_email_sent).days >= 1
 
         # Check emails sent
@@ -152,7 +151,8 @@ class EmailUsecase:
                 server.login("apikey", self.sendgrid_api_key)
 
                 server.sendmail(email_from, to_email, msg.as_string())
-                self.update_db_success_sent(email_body)
+                if email_body.eventId:
+                    self.update_db_success_sent(email_body)
 
                 message = f"Email sent successfully to {to_email} via SendGrid!"
                 logger.info(message)
@@ -176,7 +176,8 @@ class EmailUsecase:
                 server.login(self.ses_smtp_username, self.ses_smtp_password)
 
                 server.sendmail(email_from, to_email, msg.as_string())
-                self.update_db_success_sent(email_body)
+                if email_body.eventId:
+                    self.update_db_success_sent(email_body)
 
                 message = f"Email sent successfully to {to_email} via AWS SES!"
                 logger.info(message)
