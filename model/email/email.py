@@ -1,12 +1,13 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Field, Extra
-from model.entities import Entities
+from pydantic import BaseModel, EmailStr, Extra, Field
 from pynamodb.attributes import NumberAttribute, UnicodeAttribute
 
 from constants.common_constants import EmailType
+from model.entities import Entities
 from template.get_template import html_template
+
 
 class EmailTracker(Entities, discriminator='EmailTracker'):
     # hk: EmailTracker
@@ -14,10 +15,11 @@ class EmailTracker(Entities, discriminator='EmailTracker'):
     lastEmailSent = UnicodeAttribute(null=True)
     dailyEmailCount = NumberAttribute(null=True)
 
+
 class EmailTrackerIn(BaseModel):
     class Config:
         extra = Extra.ignore
-    
+
     lastEmailSent: Optional[datetime] = Field(None, title='Last email sent')
     dailyEmailCount: Optional[int] = Field(None, title='Daily email count')
 
@@ -34,5 +36,5 @@ class EmailIn(BaseModel):
     body: List[str] = Field(..., title='Body of the email')
     regards: List[str] = Field(..., title='Regards of the email')
     emailType: EmailType = Field(..., title='Type of the email')
-    eventId: str = Field(..., title='Event ID of the email')
+    eventId: str = Field(None, title='Event ID of the email')
     content: str = Field(default=html_template())

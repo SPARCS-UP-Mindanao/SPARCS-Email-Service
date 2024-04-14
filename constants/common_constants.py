@@ -49,3 +49,4 @@ class EmailType(str, Enum):
     CONFIRMATION_EMAIL = 'confirmationEmail'
     EVALUATION_EMAIL = 'evaluationEmail'
     EVENT_CREATION_EMAIL = 'eventCreationEmail'
+    ADMIN_INVITATION_EMAIL = 'adminInvitationEmail'

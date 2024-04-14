@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from http import HTTPStatus
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from pynamodb.connection import Connection
 from pynamodb.exceptions import (
@@ -115,7 +115,7 @@ class EmailTrackersRepository:
                 logger.info(f'[{email_tracker_entry.rangeKey}] ' f'Create event data succesful')
 
                 return HTTPStatus.OK, email_tracker_entry, ''
-            
+
             else:
                 logger.info(f'[{self.core_obj}] ' f'Updating new email_tracker entry')
                 data = RepositoryUtils.load_data(pydantic_schema_in=email_tracker_in, exclude_unset=True)
@@ -158,7 +158,6 @@ class EmailTrackersRepository:
             logger.error(f'[{email_tracker_entry.rangeKey}] {message}')
             return HTTPStatus.INTERNAL_SERVER_ERROR, None, message
 
-
     def append_email_sent_count(self, email_tracker_entry: EmailTracker, append_count: int = 1):
         """Adds the dailyEmailSent attribute of the email_tracker_entry by append_count
 
@@ -184,4 +183,3 @@ class EmailTrackersRepository:
         else:
             logger.info(f'[{email_tracker_entry.rangeKey}] ' f'Update email data successful')
             return HTTPStatus.OK, email_tracker_entry, ''
-                
