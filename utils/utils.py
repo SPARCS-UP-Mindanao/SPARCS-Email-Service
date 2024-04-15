@@ -7,6 +7,16 @@ from boto3.session import Session
 class Utils:
     @staticmethod
     def get_secret(secret_name: str) -> str:
+        """
+        Get secret from AWS SSM.
+
+        :param secret_name: Secret name to get.
+        :type secret_name: str
+        
+        :return: AWS SSM secret.
+        :rtype: str
+        """
+
         secret = ''
         try:
             session = Session()

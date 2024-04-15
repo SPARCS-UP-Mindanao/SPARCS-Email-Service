@@ -32,6 +32,9 @@ class RegistrationsRepository:
     """
 
     def __init__(self) -> None:
+        """
+        Constructor for the RegistrationsRepository class.
+        """
         self.core_obj = 'Registration'
         self.current_date = datetime.utcnow().isoformat()
         self.conn = Connection(region=os.getenv('REGION'))
@@ -42,14 +45,16 @@ class RegistrationsRepository:
         """
         Query registration records from the database.
 
-        Args:
-            event_id (str, optional): The event ID to query (default is None to query all records).
-            registration_id (str, optional): The registration ID to query (default is None to query all records).
+        :param event_id: The event ID to query., defaults to None
+        :type event_id: str, optional
 
-        Returns:
-            Tuple[HTTPStatus, List[Registration], str]: A tuple containing HTTP status, a list of registration records,
-            and an optional error message.
+        :param registration_id: The registration ID to query., defaults to None
+        :type registration_id: str, optional
+
+        :return: A tuple containing HTTP status, a list of registration records, and an optional error message.
+        :rtype: Tuple[HTTPStatus, List[Registration], str]
         """
+        
         try:
             if event_id is None:
                 registration_entries = list(
@@ -110,15 +115,19 @@ class RegistrationsRepository:
         """
         Query registrations with email
 
-        Args:
-            event_id (str, optional): The event ID to query (default is None to query all records).
-            email (str, optional): The email to query (default is None to query all records).
-            exclude_registration (str, optional): The registration ID to exclude (default is None to query all records).
+        :param event_id: The event ID to query.
+        :type event_id: str
 
-        Returns:
-            Tuple[HTTPStatus, List[Registration], str]: A tuple containing HTTP status, a list of registration records,
-            and an optional error message.
+        :param email: The email to query.
+        :type email: str
+
+        :param exclude_registration_id: The registration ID to exclude., defaults to None
+        :type exclude_registration_id: str, optional
+
+        :return: A tuple containing HTTP status, a list of registration records, and an optional error message.
+        :rtype: Tuple[HTTPStatus, List[Registration], str]
         """
+        
         try:
             filter_condition = Registration.entryStatus.__eq__(EntryStatus.ACTIVE.value)
             if exclude_registration_id:
@@ -162,14 +171,16 @@ class RegistrationsRepository:
         """
         Update a registration record in the database.
 
-        Args:
-            registration_entry (Registration): The existing registration record to be updated.
-            registration_in (RegistrationIn): The new registration data.
+        :param registration_entry: The existing registration record to be updated.
+        :type registration_entry: Registration
 
-        Returns:
-            Tuple[HTTPStatus, Registration, str]: A tuple containing HTTP status, the updated registration record,
-            and an optional error message.
+        :param registration_in: The new registration data.
+        :type registration_in: RegistrationIn
+
+        :return: A tuple containing HTTP status, the updated registration record, and an optional error message.
+        :rtype: Tuple[HTTPStatus, Registration, str]
         """
+        
         data = RepositoryUtils.load_data(pydantic_schema_in=registration_in, exclude_unset=True)
         has_update, updated_data = RepositoryUtils.get_update(
             old_data=RepositoryUtils.db_model_to_dict(registration_entry), new_data=data
@@ -199,12 +210,13 @@ class RegistrationsRepository:
         """
         Delete a registration record from the database.
 
-        Args:
-            registration_entry (Registration): The registration record to be deleted.
-
-        Returns:
-            HTTPStatus: The HTTP status of the operation.
+        :param registration_entry: The registration record to be deleted.
+        :type registration_entry: Registration
+        
+        :return: The HTTP status of the operation.
+        :rtype: HTTPStatus
         """
+        
         try:
             registration_entry.delete()
             logger.info(f'[{registration_entry.rangeKey}] ' f'Delete event data successful')

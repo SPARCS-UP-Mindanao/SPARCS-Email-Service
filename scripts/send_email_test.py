@@ -7,6 +7,10 @@ load_dotenv()
 
 
 def send_email_test():
+    """
+    Test function for sending email.
+    """
+
     email_usecase = EmailUsecase()
     email_data = {
         "to": ["rneljan@gmail.com"],
