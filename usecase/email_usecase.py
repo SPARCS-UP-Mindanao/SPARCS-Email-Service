@@ -17,6 +17,10 @@ from utils.utils import Utils
 
 class EmailUsecase:
     def __init__(self):
+        """
+        Constructor for the EmailUsecase class.
+        """
+
         self.sendgrid_api_key = Utils.get_secret(os.getenv('SENDGRID_API_KEY_NAME'))
         self.sendgrid_smtp_host = 'smtp.sendgrid.net'
         self.ses_smtp_username = Utils.get_secret(os.getenv('SES_SMTP_USERNAME_KEY'))
@@ -35,6 +39,31 @@ class EmailUsecase:
         cc: List[str] = None,
         bcc: List[str] = None,
     ) -> MIMEMultipart:
+        """
+        Create an email.
+
+        :param sender_email: Email address of sender.
+        :type sender_email: str
+
+        :param subject: Subject of email.
+        :type subject: str
+
+        :param content: Content of email.
+        :type content: str
+
+        :param to_email: Email addresses of receivers., defaults to None
+        :type to_email: List[str], optional
+
+        :param cc: Email addresses to cc the email., defaults to None
+        :type cc: List[str], optional
+
+        :param bcc: Email addresses to bcc the email, defaults to None
+        :type bcc: List[str], optional
+
+        :return: Email as MIME object
+        :rtype: MIMEMultipart
+        """
+
         msg = MIMEMultipart()
         msg['From'] = sender_email
         msg['Subject'] = subject
@@ -50,6 +79,13 @@ class EmailUsecase:
         return msg
 
     def send_email(self, email_body: EmailIn):
+        """
+        Send an email.
+
+        :param email_body: Email data using the EmailIn model.
+        :type email_body: EmailIn
+        """
+
         j2 = jinja2.Environment()
         email_from = f'{self.display_name} <{self.sender_email}>'
         to_email = email_body.to
@@ -91,6 +127,22 @@ class EmailUsecase:
             )
 
     def send_sendgrid_email(self, msg: MIMEMultipart, email_from: str, to_email: List[str], email_body: EmailIn):
+        """
+        Send email with sendgrid API.
+
+        :param msg: Message to send.
+        :type msg: MIMEMultipart
+
+        :param email_from: Address sending the mail.
+        :type email_from: str
+
+        :param to_email: List of addresses to send the mail.
+        :type to_email: List[str]
+
+        :param email_body: Email data using the EmailIn model.
+        :type email_body: EmailIn
+        """
+
         try:
             with smtplib.SMTP(self.sendgrid_smtp_host, 587) as server:
                 server.starttls()
@@ -109,6 +161,22 @@ class EmailUsecase:
             logger.error(message)
 
     def send_ses_email(self, msg: MIMEMultipart, email_from: str, to_email: List[str], email_body: EmailIn):
+        """
+        Send email using AWS SES.
+
+        :param msg: Message to send.
+        :type msg: MIMEMultipart
+
+        :param email_from: Address sending the email.
+        :type email_from: str
+
+        :param to_email: List of addresses to send the email.
+        :type to_email: List[str]
+
+        :param email_body: Email data using the EmailIn model.
+        :type email_body: EmailIn
+        """
+
         try:
             with smtplib.SMTP(self.ses_smtp_host, 587) as server:
                 server.starttls()
@@ -127,6 +195,13 @@ class EmailUsecase:
             logger.error(message)
 
     def update_db_success_sent(self, email_body: EmailIn):
+        """
+        Update the registration database based on supplied email.
+
+        :param email_body: Email data as EmailIn model.
+        :type email_body: EmailIn
+        """
+
         try:
             status, registrations, message = self.registrations_repository.query_registrations_with_email(
                 event_id=email_body.eventId,
