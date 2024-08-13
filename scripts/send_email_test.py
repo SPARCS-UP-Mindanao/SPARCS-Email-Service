@@ -19,10 +19,11 @@ def send_email_test():
             "We're thrilled to have you join us. If you have any questions or need assistance, please don't hesitate to reach out to us. We're here to help!",
             'See you soon!',
         ],
-        'regards': ['Best,'],
+        'regards': ['Best Regards,', 'DurianPy Team'],
         'emailType': 'registrationEmail',
         'eventId': 'uxplore-test',
         'useBackupSMTP': False,
+        'isSparcs': False,
     }
     email_body = EmailIn(**email_data)
     email_usecase.send_email(email_body)
