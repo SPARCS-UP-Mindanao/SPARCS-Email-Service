@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Extra, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, computed_field
 from pynamodb.attributes import NumberAttribute, UnicodeAttribute
 
 from constants.common_constants import EmailType
@@ -17,16 +17,14 @@ class EmailTracker(Entities, discriminator='EmailTracker'):
 
 
 class EmailTrackerIn(BaseModel):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra='ignore')
 
     lastEmailSent: Optional[datetime] = Field(None, title='Last email sent')
     dailyEmailCount: Optional[int] = Field(None, title='Daily email count')
 
 
 class EmailIn(BaseModel):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra='ignore')
 
     to: Optional[List[EmailStr]] = Field(None, title='Email address of the recipient')
     cc: Optional[List[EmailStr]] = Field(None, title='CC Email addresses')
@@ -37,4 +35,8 @@ class EmailIn(BaseModel):
     regards: List[str] = Field(..., title='Regards of the email')
     emailType: EmailType = Field(..., title='Type of the email')
     eventId: str = Field(None, title='Event ID of the email')
-    content: str = Field(default=html_template())
+    isSparcs: bool = Field(default=True, title='Is this a SPARCS sent email?')
+
+    @computed_field
+    def content(self) -> str:
+        return html_template(is_sparcs=self.isSparcs)

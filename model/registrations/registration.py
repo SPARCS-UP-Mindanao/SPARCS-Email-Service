@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Extra, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from pynamodb.attributes import BooleanAttribute, NumberAttribute, UnicodeAttribute
 from pynamodb.indexes import AllProjection, GlobalSecondaryIndex, LocalSecondaryIndex
 from pynamodb.models import Model
@@ -71,8 +71,7 @@ class Registration(Model):
 
 
 class RegistrationPatch(BaseModel):
-    class Config:
-        extra = Extra.forbid
+    model_config = ConfigDict(extra='forbid')
 
     firstName: str = Field(None, title='First Name')
     lastName: str = Field(None, title='Last Name')
@@ -94,16 +93,14 @@ class RegistrationPatch(BaseModel):
 
 
 class RegistrationIn(RegistrationPatch):
-    class Config:
-        extra = Extra.forbid
+    model_config = ConfigDict(extra='forbid')
 
     email: EmailStr = Field(None, title='Email')
     eventId: str = Field(None, title='Event ID')
 
 
 class RegistrationOut(RegistrationIn):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra='ignore')
 
     paymentId: str = Field(None, title='Payment ID')
     registrationId: str = Field(..., title='ID')
@@ -113,8 +110,7 @@ class RegistrationOut(RegistrationIn):
 
 
 class RegistrationPreviewOut(BaseModel):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra='ignore')
 
     firstName: str = Field(None, title='First Name')
     lastName: str = Field(None, title='Last Name')
