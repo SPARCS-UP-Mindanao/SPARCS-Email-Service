@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Extra, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from pynamodb.attributes import BooleanAttribute, NumberAttribute, UnicodeAttribute
 from pynamodb.indexes import AllProjection, GlobalSecondaryIndex, LocalSecondaryIndex
 from pynamodb.models import Model
@@ -71,53 +71,49 @@ class Registration(Model):
 
 
 class RegistrationPatch(BaseModel):
-    class Config:
-        extra = Extra.forbid
+    model_config = ConfigDict(extra='forbid')
 
-    firstName: str = Field(None, title="First Name")
-    lastName: str = Field(None, title="Last Name")
-    contactNumber: str = Field(None, title="Contact Number")
-    careerStatus: str = Field(None, title="Career Status")
-    yearsOfExperience: str = Field(None, title="Years of Experience")
-    organization: str = Field(None, title="Organization")
-    title: str = Field(None, title="Title")
-    certificateClaimed: bool = Field(None, title="Certificate Claimed")
-    discountCode: str = Field(None, title="Discount Code")
-    gcashPayment: str = Field(None, title="Gcash Payment")
-    referenceNumber: str = Field(None, title="Reference Number")
-    amountPaid: float = Field(None, title="Amount Paid")
-    certificateImgObjectKey: str = Field(None, title="Certificate Image Object Key")
-    certificatePdfObjectKey: str = Field(None, title="Certificate PDF Object Key")
-    registrationEmailSent: bool = Field(None, title="Registration Email Sent")
-    confirmationEmailSent: bool = Field(None, title="Confirmation Email Sent")
-    evaluationEmailSent: bool = Field(None, title="Evaluation Email Sent")
+    firstName: str = Field(None, title='First Name')
+    lastName: str = Field(None, title='Last Name')
+    contactNumber: str = Field(None, title='Contact Number')
+    careerStatus: str = Field(None, title='Career Status')
+    yearsOfExperience: str = Field(None, title='Years of Experience')
+    organization: str = Field(None, title='Organization')
+    title: str = Field(None, title='Title')
+    certificateClaimed: bool = Field(None, title='Certificate Claimed')
+    discountCode: str = Field(None, title='Discount Code')
+    gcashPayment: str = Field(None, title='Gcash Payment')
+    referenceNumber: str = Field(None, title='Reference Number')
+    amountPaid: float = Field(None, title='Amount Paid')
+    certificateImgObjectKey: str = Field(None, title='Certificate Image Object Key')
+    certificatePdfObjectKey: str = Field(None, title='Certificate PDF Object Key')
+    registrationEmailSent: bool = Field(None, title='Registration Email Sent')
+    confirmationEmailSent: bool = Field(None, title='Confirmation Email Sent')
+    evaluationEmailSent: bool = Field(None, title='Evaluation Email Sent')
 
 
 class RegistrationIn(RegistrationPatch):
-    class Config:
-        extra = Extra.forbid
+    model_config = ConfigDict(extra='forbid')
 
-    email: EmailStr = Field(None, title="Email")
-    eventId: str = Field(None, title="Event ID")
+    email: EmailStr = Field(None, title='Email')
+    eventId: str = Field(None, title='Event ID')
 
 
 class RegistrationOut(RegistrationIn):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra='ignore')
 
-    paymentId: str = Field(None, title="Payment ID")
-    registrationId: str = Field(..., title="ID")
-    createDate: datetime = Field(..., title="Created At")
-    updateDate: datetime = Field(..., title="Updated At")
-    gcashPaymentUrl: str = Field(None, title="Gcash Payment Address")
+    paymentId: str = Field(None, title='Payment ID')
+    registrationId: str = Field(..., title='ID')
+    createDate: datetime = Field(..., title='Created At')
+    updateDate: datetime = Field(..., title='Updated At')
+    gcashPaymentUrl: str = Field(None, title='Gcash Payment Address')
 
 
 class RegistrationPreviewOut(BaseModel):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra='ignore')
 
-    firstName: str = Field(None, title="First Name")
-    lastName: str = Field(None, title="Last Name")
-    contactNumber: str = Field(None, title="Contact Number")
-    email: EmailStr = Field(None, title="Email")
-    registrationId: str = Field(..., title="ID")
+    firstName: str = Field(None, title='First Name')
+    lastName: str = Field(None, title='Last Name')
+    contactNumber: str = Field(None, title='Contact Number')
+    email: EmailStr = Field(None, title='Email')
+    registrationId: str = Field(..., title='ID')

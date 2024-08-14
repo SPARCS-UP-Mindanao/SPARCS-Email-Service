@@ -1,10 +1,12 @@
 service: sparcs-email-service
+frameworkVersion: ^3.25.0
 
 custom:
   projectName: sparcs-events
   serviceName: email
   stage: ${opt:stage, self:provider.stage}
   registrations: ${self:custom.stage}-${self:custom.projectName}-registrations
+  entities: ${self:custom.stage}-${self:custom.projectName}-entities
   emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
   sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   frontendUrl:
@@ -13,6 +15,9 @@ custom:
   smtpUsernameKey: ${self:custom.projectName}-techtix-smtp-username
   smtpPasswordKey: ${self:custom.projectName}-techtix-smtp-password
   pythonRequirements:
+    useDownloadCache: false
+    useStaticCache: false
+    slim: false
     dockerizePip: non-linux
     noDeploy:
       - requests
@@ -22,7 +27,6 @@ custom:
       name: sparcs-events-${self:custom.stage}-python-requirements
       compatibleRuntimes:
         - python3.8
-    slim: true
 
 provider:
   name: aws
@@ -33,6 +37,7 @@ provider:
   environment:
     REGION: ${self:provider.region}
     STAGE: ${self:custom.stage}
+    ENTITIES_TABLE: ${self:custom.entities}
     EMAIL_QUEUE: ${self:custom.emailQueue}
     SENDER_EMAIL: contact@sparcsup.com
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
@@ -55,8 +60,6 @@ plugins:
 
 package:
   patterns:
-    - "setup/**"
-    - "src/**"
     - "!requirements.txt"
     - "!.serverless/**"
     - "!venv/**"
@@ -67,3 +70,9 @@ package:
     - "!package-lock.json"
     - "!Pipfile"
     - "!Pipfile.lock"
+    - "!log.txt"
+    - "!README.md"
+    - "!ruff.toml"
+    - "!scripts/**"
+    - "!resources/**"
+    - "!__pycache__/**"
