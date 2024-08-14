@@ -14,6 +14,9 @@ custom:
   smtpUsernameKey: ${self:custom.projectName}-techtix-smtp-username
   smtpPasswordKey: ${self:custom.projectName}-techtix-smtp-password
   pythonRequirements:
+    useDownloadCache: false
+    useStaticCache: false
+    slim: false
     dockerizePip: non-linux
     noDeploy:
       - requests
@@ -23,7 +26,6 @@ custom:
       name: sparcs-events-${self:custom.stage}-python-requirements
       compatibleRuntimes:
         - python3.8
-    slim: true
 
 provider:
   name: aws
@@ -57,8 +59,6 @@ plugins:
 
 package:
   patterns:
-    - "setup/**"
-    - "src/**"
     - "!requirements.txt"
     - "!.serverless/**"
     - "!venv/**"
@@ -69,3 +69,9 @@ package:
     - "!package-lock.json"
     - "!Pipfile"
     - "!Pipfile.lock"
+    - "!log.txt"
+    - "!README.md"
+    - "!ruff.toml"
+    - "!scripts/**"
+    - "!resources/**"
+    - "!__pycache__/**"
