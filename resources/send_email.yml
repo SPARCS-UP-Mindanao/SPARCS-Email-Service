@@ -2,6 +2,7 @@ send-email:
   handler: handler.send_email_handler
   layers:
     - { Ref: PythonRequirementsLambdaLayer }
+  timeout: 900
   events:
     - sqs:
         arn:
