@@ -1,0 +1,15 @@
+Resources:
+  EmailQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: ${self:custom.emailQueue}
+      FifoQueue: true
+      MessageRetentionPeriod: 86400 # 1 day
+      VisibilityTimeout: 900
+      ReceiveMessageWaitTimeSeconds: 20
+
+Outputs:
+  EmailQueueUrl:
+    Value: !Ref EmailQueue
+    Export:
+      Name: EmailQueue-${self:custom.stage}

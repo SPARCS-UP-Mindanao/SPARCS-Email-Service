@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPARCS Email</title>
+    <style>
+        .icon-link:hover {
+            color: #007bff
+        }
+    </style>
+</head>
+
+<body>
+<center>
+    <div class="mainContent" style="width:100%;padding:40px 0px;background-color:#ffffff;">
+        <header style="background-color:#f0f8ff;width:510px;border:none;">
+            <table>
+                <tr>
+                    <td class="branding" style="text-align:center;align-items:center;padding:20px;color:red;">
+                        <img src="{{frontend_url}}/email/sparcs_logo.png" alt="SPARCS Logo"
+                             style="max-width:62.593px;max-height:61.991px;flex-shrink:0;margin-top:auto;"/>
+                        <p
+                                style='color:var(--light-primary-700, #0f1c95);max-width:35%;font-family:"Tahoma", sans-serif;font-size:16px;font-style:normal;font-weight:800;text-align:center;line-height:120%;margin:0 auto;max-width:257px;max-height:57px;'>
+                            <bold>The Society of Programmers and Refined Computer Scientists
+                                (SPARCS)
+                            </bold>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </header>
+        <div class="contentDiv"
+             style="width:510px;border-style:solid;padding:30px 0px;text-align:left;background-color:white;border:none;">
+            <table>
+                <tr>
+                    <td>
+                        <div class="emailSalutation" style="padding:10px 40px;">
+                            <p
+                                    style='color:var(--neutrals-800, #454545);font-family:"Verdana", sans-serif;font-size:13px;font-style:normal;font-weight:400;line-height:120%;letter-spacing:-0.192px;'>
+                                {{salutation}}</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="emailBody" style="padding:0px 40px;">
+                        {% for paragraph in body:%}
+                        <p
+                                style='color:var(--neutrals-800, #454545);font-family:"Verdana", sans-serif;font-size:13px;font-style:normal;font-weight:400;line-height:120%;letter-spacing:-0.192px;'>
+                            {{paragraph}}
+                        </p>
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="emailRegards" style="padding:10px 40px;">
+                            {% for line in regards:%}
+                            <p
+                                    style='color:var(--neutrals-800, #454545);font-family:"Verdana", sans-serif;font-size:13px;font-style:normal;font-weight:400;line-height:120%;letter-spacing:-0.192px;'>
+                                {{line}}</p>
+                            <p {% endfor %}</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="member-card"
+                             style="margin-left:30px;display:flex;justify-content:space-between;align-items:center;">
+                            <img class="circle"
+                                 src="https://arjsarmiento.github.io/CMSC57-Portfolio-Nuxt/_nuxt/img/profile.d558c27.jpeg"
+                                 alt="Arnel Jan Sarmiento Image"
+                                 style="height:85px;width:85px;background-color:#f0f8ff;border-radius:100%;"
+                            >
+                            <div class="vertical-line"
+                                 style="border-left:2px solid #888;height:100px;margin-left:20px;"></div>
+                            <div class="para"
+                                 style="display:flex;flex-direction:column;margin-left:20px;margin-bottom:12.5px;">
+                                <div class="card-content">
+                                    <p
+                                            style='color:var(--neutrals-800, #454545);font-family:"Verdana", sans-serif;font-size:13px;font-style:normal;font-weight:400;line-height:120%;letter-spacing:-0.192px;display:flex;color:var(--light-primary-600, #1125b8);'>
+                                        Arnel Jan Sarmiento, President</p>
+                                    <p
+                                            style='color:var(--neutrals-800, #454545);font-family:"Verdana", sans-serif;font-size:13px;font-style:normal;font-weight:400;line-height:120%;letter-spacing:-0.192px;display:flex;'>
+                                        The Society of Computer Programmers and Refined Computer
+                                        Scientists (SPARCS)
+                                    </p>
+                                </div>
+                                <div class="social-icons">
+                                    <a href="https://www.facebook.com/SPARCSUPMin" target="_blank" class="icon-link"
+                                       style="text-decoration:none;color:var(--light-primary-600, #1125b8);font-size:15px;transition:color 0.3s ease;margin-right:5px;"><img
+                                            src="{{frontend_url}}/email/facebook.png" alt="facebook logo"
+                                            style="justify-content:space-between;width:20px;height:20px;"></a>
+                                    <a href="https://www.linkedin.com/company/sparcsup" target="_blank"
+                                       class="icon-link"
+                                       style="text-decoration:none;color:var(--light-primary-600, #1125b8);font-size:15px;transition:color 0.3s ease;margin-right:5px;"><img
+                                            src="{{frontend_url}}/email/linkedin.png" alt="linkedin logo"
+                                            style="justify-content:space-between;width:20px;height:20px;"></a>
+                                    <a href="https://www.instagram.com/sparcs_upmin" target="_blank" class="icon-link"
+                                       style="text-decoration:none;color:var(--light-primary-600, #1125b8);font-size:15px;transition:color 0.3s ease;margin-right:5px;"><img
+                                            src="{{frontend_url}}/email/instagram.png" alt="instagram logo"
+                                            style="justify-content:space-between;width:20px;height:20px;"></a>
+                                    <a href="https://www.sparcsup.com" target="_blank" class="icon-link logo"
+                                       style="text-decoration:none;color:var(--light-primary-600, #1125b8);font-size:15px;transition:color 0.3s ease;margin-right:5px;"><img
+                                            src="{{frontend_url}}/email/globe-solid.png" alt="website logo"
+                                            style="justify-content:space-between;width:20px;height:20px;"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <footer style="background-color:#f0f8ff;width:510px;border:none;">
+            <table>
+                <tr>
+                    <td style="background:var(--light-primary-600, #1125b8);max-width:100%;height:150px;">
+                        <img src="{{frontend_url}}/email/logo.png" alt="SPARCS Logo"
+                             style="width:23%;margin-left:30px;margin-bottom:20px;"/>
+                        <div class="org-social-icons" style="float:right;margin-right:40px;display:flex;">
+                            <a href="https://www.facebook.com/SPARCSUPMin" target="_blank"><img
+                                    src="{{frontend_url}}/email/footer_facebook.png"
+                                    alt="org_facebook"
+                                    style="width:23%;margin-left:30px;margin-bottom:20px;width:20px;height:20px;"></a>
+                            <a href="https://www.linkedin.com/company/sparcsup" target="_blank"><img
+                                    src="{{frontend_url}}/email/footer_linkedin.png"
+                                    alt="org_linkedin"
+                                    style="width:23%;margin-left:30px;margin-bottom:20px;width:20px;height:20px;"></a>
+                            <a href="https://www.instagram.com/sparcs_upmin" target="_blank"><img
+                                    src="{{frontend_url}}/email/footer_instagram.png"
+                                    alt="org_instagram"
+                                    style="width:23%;margin-left:30px;margin-bottom:20px;width:20px;height:20px;"></a>
+                            <a href="https://www.sparcsup.com" target="_blank"><img
+                                    src="{{frontend_url}}/email/footer_website.png"
+                                    alt="org_website"
+                                    style="width:23%;margin-left:30px;margin-bottom:20px;width:20px;height:20px;"></a>
+                        </div>
+                        <p
+                                style='margin:0;padding:0;margin-left:30px;font-size:15px;font-family:"Verdana", sans-serif;font-style:600;color: white;'>
+                            UP Mindanao, Tugbok, Davao City</p>
+                        <p
+                                style='margin:0;padding:0;margin-left:30px;font-size:15px;font-family:"Verdana", sans-serif;font-style:600;color: white;'>
+                            8000 Davao del Sur</p>
+                    </td>
+                </tr>
+            </table>
+        </footer>
+    </div>
+</center>
+</body>
+
+</html>

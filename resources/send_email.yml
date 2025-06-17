@@ -1,0 +1,33 @@
+send-email:
+  handler: handler.send_email_handler
+  layers:
+    - { Ref: PythonRequirementsLambdaLayer }
+  timeout: 900
+  events:
+    - sqs:
+        arn:
+          "Fn::GetAtt": [ EmailQueue, Arn ]
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "sqs:*"
+      Resource:
+        - "Fn::GetAtt": [ EmailQueue, Arn ]
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource:
+        - arn:aws:ssm:*:*:parameter/${self:custom.sendgridApiKeyName}
+        - arn:aws:ssm:*:*:parameter/${self:custom.smtpUsernameKey}
+        - arn:aws:ssm:*:*:parameter/${self:custom.smtpPasswordKey}
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations
+        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations/index/*
+    - Effect: Allow
+      Action:
+        - "dynamodb:*"
+      Resource:
+        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-entities
