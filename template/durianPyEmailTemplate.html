@@ -1,41 +1,38 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DurianPy Email</title>
-  </head>
 
-  <body>
-    <center>
-      <div
-        class="mainContent"
-        style="width: 100%; padding: 40px 0px; background-color: #ffffff"
-      >
-        <header style="width: 750px">
-          <table>
-            <tr>
-              <td
-                class="branding"
-                style="
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DurianPy Email</title>
+  <style>
+    .icon-link:hover {
+      color: #007bff;
+    }
+  </style>
+</head>
+
+<body>
+  <center>
+    <div class="mainContent" style="width: 100%; padding: 40px 0px; background-color: #ffffff">
+      <header style="width: 750px">
+        <table>
+          <tr>
+            <td class="branding" style="
                   text-align: center;
                   align-items: center;
                   padding: 20px;
                   color: red;
-                "
-              >
-                <img
-                  src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891675751389.png"
-                  alt="DurianPy Logo"
-                  style="
+                ">
+              <img
+                src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891675751389.png"
+                alt="DurianPy Logo" style="
                     max-width: 200px;
                     max-height: 100px;
                     flex-shrink: 0;
                     margin-top: auto;
-                  "
-                />
-                <p
-                  style="
+                  " />
+              <p style="
                     color: var(--light-primary-700, #3eb372);
                     max-width: 50%;
                     font-family: &quot;Nunito Sans&quot;, sans-serif;
@@ -47,32 +44,27 @@
                     margin: 0 auto;
                     max-width: 257px;
                     max-height: 57px;
-                  "
-                >
-                  Accelerating Davao's Tech Growth with Python
-                </p>
-              </td>
-            </tr>
-          </table>
-        </header>
+                  ">
+                Accelerating Davao's Tech Growth with Python
+              </p>
+            </td>
+          </tr>
+        </table>
+      </header>
 
-        <div
-          class="contentDiv"
-          style="
+      <div class="contentDiv" style="
             width: 750px;
             border-style: solid;
             padding: 30px 0px;
             text-align: left;
             background-color: white;
             border: none;
-          "
-        >
-          <table>
-            <tr>
-              <td>
-                <div class="emailSalutation" style="padding: 10px 40px">
-                  <p
-                    style="
+          ">
+        <table>
+          <tr>
+            <td>
+              <div class="emailSalutation" style="padding: 10px 40px">
+                <p style="
                       color: var(--neutrals-800, #454545);
                       font-family: &quot;Verdana&quot;, sans-serif;
                       font-size: 13px;
@@ -80,18 +72,16 @@
                       font-weight: 400;
                       line-height: 120%;
                       letter-spacing: -0.192px;
-                    "
-                  >
-                    {{salutation}}
-                  </p>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="emailBody" style="padding: 0px 40px">
-                {% for paragraph in body:%}
-                <p
-                  style="
+                    ">
+                  {{salutation}}
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="emailBody" style="padding: 0px 40px">
+              {% for paragraph in body:%}
+              <p style="
                     color: var(--neutrals-800, #454545);
                     font-family: &quot;Verdana&quot;, sans-serif;
                     font-size: 13px;
@@ -99,19 +89,17 @@
                     font-weight: 400;
                     line-height: 120%;
                     letter-spacing: -0.192px;
-                  "
-                >
-                  {{paragraph}}
-                </p>
-                {% endfor %}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="emailRegards" style="padding: 10px 40px">
-                  {% for line in regards:%}
-                  <p
-                    style="
+                  ">
+                {{paragraph}}
+              </p>
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="emailRegards" style="padding: 10px 40px">
+                {% for line in regards:%}
+                <p style="
                       color: var(--neutrals-800, #454545);
                       font-family: &quot;Verdana&quot;, sans-serif;
                       font-size: 13px;
@@ -119,175 +107,133 @@
                       font-weight: 400;
                       line-height: 120%;
                       letter-spacing: -0.192px;
-                    "
-                  >
-                    {{line}}
-                  </p>
-                  {% endfor %}
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div style="padding: 10px 40px">
-                  <p style="font-family: Verdana, sans-serif; font-weight: 800">
-                    Arnel Jan Sarmiento
-                  </p>
-                  <p style="font-family: Verdana, sans-serif; font-size: 11px">
-                    Community Lead | DurianPy
-                  </p>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
+                    ">
+                  {{line}}
+                </p>
+                {% endfor %}
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="padding: 10px 40px">
+                <p style="font-family: Verdana, sans-serif; font-weight: 800">
+                  Arnel Jan Sarmiento
+                </p>
+                <p style="font-family: Verdana, sans-serif; font-size: 11px">
+                  Community Lead | DurianPy
+                </p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
 
-        <footer style="width: 750px; border-top: 20px solid #3e2c54">
-          <table
-            role="presentation"
-            width="750"
-            cellpadding="0"
-            cellspacing="0"
-            style="border: none; padding-top: 50px"
-          >
-            <tr>
-              <!-- Left column -->
-              <td width="150" valign="top" style="padding: 2rem">
-                <img
-                  src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891756730145.png"
-                  style="width: 300px"
-                />
-              </td>
+      <footer style="width: 750px; border-top: 20px solid #3e2c54">
+        <table role="presentation" width="750" cellpadding="0" cellspacing="0" style="border: none; padding-top: 50px">
+          <tr>
+            <!-- Left column -->
+            <td width="150" valign="top" style="padding: 2rem">
+              <img
+                src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891756730145.png"
+                style="width: 300px" />
+            </td>
 
-              <!-- Separator -->
-              <td width="5" style="background-color: #3e2c54"></td>
+            <!-- Separator -->
+            <td width="5" style="background-color: #3e2c54"></td>
 
-              <!-- Right column -->
-              <td valign="top" style="padding: 2rem">
-                <img
-                  src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891675751389.png"
-                  width="200"
-                  style="display: block; margin-bottom: 8px"
-                  alt="DurianPy Logo"
-                />
-                <p
-                  style="
+            <!-- Right column -->
+            <td valign="top" style="padding: 2rem">
+              <img
+                src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891675751389.png"
+                width="200" style="display: block; margin-bottom: 8px" alt="DurianPy Logo" />
+              <p style="
                     margin: 0;
                     font-family: Verdana, sans-serif;
                     color: #3eb372;
-                  "
-                >
-                  Accelerating Davao's Tech Growth with Python
-                </p>
+                  ">
+                Accelerating Davao's Tech Growth with Python
+              </p>
 
-                <!-- Social links -->
-                <table
-                  role="presentation"
-                  cellpadding="0"
-                  cellspacing="5"
-                  style="margin-top: 10px"
-                >
-                  <tr>
-                    <td style="padding-bottom: 6px">
-                      <img
-                        src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891640913455.png"
-                        width="16"
-                        style="vertical-align: middle; margin-right: 6px"
-                      />
-                      <span
-                        style="
+              <!-- Social links -->
+              <table role="presentation" cellpadding="0" cellspacing="5" style="margin-top: 10px">
+                <tr>
+                  <td style="padding-bottom: 6px">
+                    <img
+                      src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891640913455.png"
+                      width="16" style="vertical-align: middle; margin-right: 6px" />
+                    <span style="
                           font-size: 13px;
                           font-family: Verdana, sans-serif;
                           color: #3e2c54;
                           font-weight: 700;
                           text-decoration: none;
-                        "
-                        >contact@durianpy.org</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-bottom: 6px">
-                      <img
-                        src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/175268189163781878.png"
-                        width="16"
-                        style="vertical-align: middle; margin-right: 6px"
-                      />
-                      <span
-                        style="
+                        ">contact@durianpy.org</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 6px">
+                    <img
+                      src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/175268189163781878.png"
+                      width="16" style="vertical-align: middle; margin-right: 6px" />
+                    <span style="
                           font-size: 13px;
                           font-family: Verdana, sans-serif;
                           color: #3e2c54;
                           font-weight: 700;
                           text-decoration: none;
-                        "
-                        >durianpy.org</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-bottom: 6px">
-                      <img
-                        src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891645394675.png"
-                        width="16"
-                        style="vertical-align: middle; margin-right: 6px"
-                      />
-                      <span
-                        style="
+                        ">durianpy.org</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 6px">
+                    <img
+                      src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891645394675.png"
+                      width="16" style="vertical-align: middle; margin-right: 6px" />
+                    <span style="
                           font-size: 13px;
                           font-family: Verdana, sans-serif;
                           color: #3e2c54;
                           font-weight: 700;
                           text-decoration: none;
-                        "
-                        >linkedin.com/company/durianpy</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style="padding-bottom: 6px">
-                      <img
-                        src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/175268189164191951.png"
-                        width="16"
-                        style="vertical-align: middle; margin-right: 6px"
-                      />
-                      <span
-                        style="
+                        ">linkedin.com/company/durianpy</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 6px">
+                    <img
+                      src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/175268189164191951.png"
+                      width="16" style="vertical-align: middle; margin-right: 6px" />
+                    <span style="
                           font-size: 13px;
                           font-family: Verdana, sans-serif;
                           color: #3e2c54;
                           font-weight: 700;
                           text-decoration: none;
-                        "
-                        >facebook.com/durianpy</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img
-                        src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891639902124.png"
-                        width="16"
-                        style="vertical-align: middle; margin-right: 6px"
-                      />
-                      <span
-                        style="
+                        ">facebook.com/durianpy</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <img
+                      src="https://sendwithses-855401425151-1707894036997510955-us-east-1.s3.amazonaws.com/opensource/1752681891639902124.png"
+                      width="16" style="vertical-align: middle; margin-right: 6px" />
+                    <span style="
                           font-size: 13px;
                           font-family: Verdana, sans-serif;
                           color: #3e2c54;
                           font-weight: 700;
                           text-decoration: none;
-                        "
-                        >instagram.com/durianpy.dvo</span
-                      >
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </footer>
-      </div>
-    </center>
-  </body>
+                        ">instagram.com/durianpy.dvo</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </footer>
+    </div>
+  </center>
+</body>
+
 </html>
