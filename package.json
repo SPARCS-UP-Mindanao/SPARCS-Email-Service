@@ -1,5 +1,5 @@
 {
-  "name": "sparcs-events-email-service",
+  "name": "durianpy-events-email-service",
   "version": "1.0.0",
   "description": "Serverless Framework Python Email SQS Producer-Consumer on AWS",
   "author": "",

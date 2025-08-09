@@ -1,4 +1,4 @@
-# SPARCS Email Service
+# DURIANPY Email Service
 
 A serverless Email Service with SQS and Twillio SendGrid
 

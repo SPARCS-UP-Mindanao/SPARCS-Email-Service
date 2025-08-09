@@ -40,6 +40,7 @@ provider:
     ENTITIES_TABLE: ${self:custom.entities}
     EMAIL_QUEUE: ${self:custom.emailQueue}
     SENDER_EMAIL: contact@durianpy.org
+    DISPLAY_EMAIL_NAME: DurianPy Davao Python User Group
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
     FRONTEND_URL: ${self:custom.frontendUrl.${self:custom.stage}}
     REGISTRATIONS_TABLE: ${self:custom.registrations}
