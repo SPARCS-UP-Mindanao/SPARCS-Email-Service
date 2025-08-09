@@ -26,7 +26,7 @@ class EmailUsecase:
         self.ses_smtp_password = Utils.get_secret(os.getenv('SES_SMTP_PASSWORD_KEY'))
         self.ses_smtp_host = os.getenv('SES_SMTP_HOST')
         self.sender_email = os.getenv('SENDER_EMAIL')
-        self.display_name = 'UP Mindanao SPARCS'
+        self.display_name = os.getenv('DISPLAY_EMAIL_NAME')
         self.registrations_repository = RegistrationsRepository()
         self.email_tracker_repository = EmailTrackersRepository()
         self.datetime_now = datetime.now(timezone.utc)
