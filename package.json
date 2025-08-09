@@ -5,6 +5,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "serverless": "^3.40.0",
+    "serverless-better-credentials": "^2.0.1",
     "serverless-iam-roles-per-function": "^3.2.0",
     "serverless-python-requirements": "^6.0.0"
   }
