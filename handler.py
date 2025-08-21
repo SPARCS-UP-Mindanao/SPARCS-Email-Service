@@ -16,7 +16,7 @@ def send_email_handler(event, context):
     _ = context
     records = event['Records']
     logger.info(records)
-    for record in event['Records']:
+    for record in records:
         message_body = json.loads(record['body'])
         for message in message_body:
             email_in = EmailIn(**message)
