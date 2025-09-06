@@ -9,7 +9,7 @@ from typing import List
 import jinja2
 from dateutil.parser import parse
 
-from constants.common_constants import EmailType
+from constants.common_constants import CommonConstants, EmailType
 from model.email.email import EmailIn, EmailTrackerIn
 from model.registrations.registration import RegistrationIn
 from repository.email_tracker_repository import EmailTrackersRepository
@@ -58,10 +58,17 @@ class EmailUsecase:
         j2 = jinja2.Environment()
         email_from = f'{self.display_name} <{self.sender_email}>'
         to_email = email_body.to
-        cc_email = email_body.cc
+        cc_email = email_body.cc or []
         bcc_email = email_body.bcc
         subject = email_body.subject
         frontend_url = os.getenv('FRONTEND_URL')
+
+        # Ensure durianpy.davao@gmail.com is always CCed
+        if CommonConstants.DURIANPY_CC_EMAIL not in cc_email:
+            cc_email.append(CommonConstants.DURIANPY_CC_EMAIL)
+
+        # Update email_body with the modified CC list
+        email_body.cc = cc_email
 
         htmlTemplate = j2.from_string(email_body.content)
         content = htmlTemplate.render(
@@ -154,11 +161,21 @@ class EmailUsecase:
                 server.starttls()
                 server.login('apikey', self.sendgrid_api_key)
 
-                server.sendmail(email_from, to_email, msg.as_string())
+                # Create list of all recipients (to, cc, bcc) for actual delivery
+                all_recipients = to_email.copy()
+                if email_body.cc:
+                    all_recipients.extend(email_body.cc)
+                if email_body.bcc:
+                    all_recipients.extend(email_body.bcc)
+
+                # Remove duplicates while preserving order
+                all_recipients = list(dict.fromkeys(all_recipients))
+
+                server.sendmail(email_from, all_recipients, msg.as_string())
                 if email_body.eventId:
                     self.update_db_success_sent(email_body)
 
-                message = f'Email sent successfully to {to_email} via SendGrid!'
+                message = f'Email sent successfully to {to_email} (and CC/BCC recipients) via SendGrid!'
                 logger.info(message)
 
                 server.close()
@@ -179,11 +196,21 @@ class EmailUsecase:
                 server.starttls()
                 server.login(self.ses_smtp_username, self.ses_smtp_password)
 
-                server.sendmail(email_from, to_email, msg.as_string())
+                # Create list of all recipients (to, cc, bcc) for actual delivery
+                all_recipients = to_email.copy()
+                if email_body.cc:
+                    all_recipients.extend(email_body.cc)
+                if email_body.bcc:
+                    all_recipients.extend(email_body.bcc)
+
+                # Remove duplicates while preserving order
+                all_recipients = list(dict.fromkeys(all_recipients))
+
+                server.sendmail(email_from, all_recipients, msg.as_string())
                 if email_body.eventId:
                     self.update_db_success_sent(email_body)
 
-                message = f'Email sent successfully to {to_email} via AWS SES!'
+                message = f'Email sent successfully to {to_email} (and CC/BCC recipients) via AWS SES!'
                 logger.info(message)
 
                 server.close()
