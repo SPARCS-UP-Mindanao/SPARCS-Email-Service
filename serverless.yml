@@ -10,7 +10,7 @@ custom:
   emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
   sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   frontendUrl:
-    dev:  ${ssm:/techtix/frontend-url-dev}
+    dev: ${ssm:/techtix/frontend-url-dev}
     staging: ${ssm:/techtix/frontend-url-staging}
     prod: ${ssm:/techtix/frontend-url-prod}
   smtpUsernameKey: ${self:custom.projectName}-techtix-smtp-username
@@ -48,7 +48,6 @@ provider:
     SES_SMTP_USERNAME_KEY: ${self:custom.smtpUsernameKey}
     SES_SMTP_PASSWORD_KEY: ${self:custom.smtpPasswordKey}
     SES_SMTP_HOST: email-smtp.ap-southeast-1.amazonaws.com
-
 
 resources:
   - ${file(resources/sqs.yml)}

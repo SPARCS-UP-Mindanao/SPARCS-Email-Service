@@ -6,13 +6,13 @@ send-email:
   events:
     - sqs:
         arn:
-          "Fn::GetAtt": [ EmailQueue, Arn ]
+          "Fn::GetAtt": [EmailQueue, Arn]
   iamRoleStatements:
     - Effect: Allow
       Action:
         - "sqs:*"
       Resource:
-        - "Fn::GetAtt": [ EmailQueue, Arn ]
+        - "Fn::GetAtt": [EmailQueue, Arn]
     - Effect: Allow
       Action:
         - ssm:GetParameter
