@@ -11,7 +11,7 @@ custom:
   sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   frontendUrl:
     dev: ${ssm:/techtix/frontend-url-dev}
-    staging: ${ssm:/techtix/frontend-url-staging}
+    # staging: ${ssm:/techtix/frontend-url-staging}
     prod: ${ssm:/techtix/frontend-url-prod}
   smtpUsernameKey: ${self:custom.projectName}-techtix-smtp-username
   smtpPasswordKey: ${self:custom.projectName}-techtix-smtp-password
