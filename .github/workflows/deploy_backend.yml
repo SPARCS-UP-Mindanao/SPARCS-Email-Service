@@ -1,4 +1,4 @@
-name: Deploy DURIANPY Email Service
+name: Deploy SPARCS Email Service
 on:
   push:
     branches:
