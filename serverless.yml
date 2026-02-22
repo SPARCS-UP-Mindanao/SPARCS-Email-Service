@@ -1,17 +1,18 @@
-service: sparcs-email-service
-frameworkVersion: ^3.25.0
+service: durianpy-email-service
+frameworkVersion: ^3.40.0
 
 custom:
-  projectName: sparcs-events
-  serviceName: email
+  projectName: durianpy-events
+  serviceName: durianpy-email
   stage: ${opt:stage, self:provider.stage}
   registrations: ${self:custom.stage}-${self:custom.projectName}-registrations
   entities: ${self:custom.stage}-${self:custom.projectName}-entities
   emailQueue: ${self:custom.stage}-${self:custom.projectName}-email-queue.fifo
   sendgridApiKeyName: ${self:custom.stage}-${self:custom.projectName}-sendgrid-api-key
   frontendUrl:
-    dev: https://sparcs-event-platform-git-stage-sparcss-projects.vercel.app
-    prod: https://www.techtix.app
+    dev: ${ssm:/techtix/frontend-url-dev}
+    staging: ${ssm:/techtix/frontend-url-staging}
+    prod: ${ssm:/techtix/frontend-url-prod}
   smtpUsernameKey: ${self:custom.projectName}-techtix-smtp-username
   smtpPasswordKey: ${self:custom.projectName}-techtix-smtp-password
   pythonRequirements:
@@ -24,7 +25,7 @@ custom:
       - boto3
       - botocore
     layer:
-      name: sparcs-events-${self:custom.stage}-python-requirements
+      name: durianpy-events-${self:custom.stage}-python-requirements
       compatibleRuntimes:
         - python3.8
 
@@ -39,14 +40,14 @@ provider:
     STAGE: ${self:custom.stage}
     ENTITIES_TABLE: ${self:custom.entities}
     EMAIL_QUEUE: ${self:custom.emailQueue}
-    SENDER_EMAIL: contact@sparcsup.com
+    SENDER_EMAIL: contact@durianpy.org
+    DISPLAY_EMAIL_NAME: DurianPy Davao Python User Group
     SENDGRID_API_KEY_NAME: ${self:custom.sendgridApiKeyName}
     FRONTEND_URL: ${self:custom.frontendUrl.${self:custom.stage}}
     REGISTRATIONS_TABLE: ${self:custom.registrations}
     SES_SMTP_USERNAME_KEY: ${self:custom.smtpUsernameKey}
     SES_SMTP_PASSWORD_KEY: ${self:custom.smtpPasswordKey}
     SES_SMTP_HOST: email-smtp.ap-southeast-1.amazonaws.com
-
 
 resources:
   - ${file(resources/sqs.yml)}
@@ -55,6 +56,7 @@ functions:
   - ${file(resources/send_email.yml)}
 
 plugins:
+  - serverless-better-credentials
   - serverless-python-requirements
   - serverless-iam-roles-per-function
 

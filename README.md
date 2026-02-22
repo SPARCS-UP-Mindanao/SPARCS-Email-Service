@@ -8,26 +8,30 @@ A serverless Email Service with SQS and Twillio SendGrid
    - Ensure Python 3.8 is installed
 
 2. **Install pipenv:**
+
    ```shell
    pip install pipenv==2023.4.29 --user
    ```
 
 3. **Install Python Dependencies:**
+
    ```shell
    pipenv install
    ```
 
 4. **Activate Virtual Environment:**
+
    ```shell
    pipenv shell
    ```
 
 5. **Add Environment Variables:**
-    -  Add the `.env` file provided to you in the `backend` directory
+   - Add the `.env` file provided to you in the `backend` directory
 
 ## Run Locally
 
 1. **Activate Virtual Environment:**
+
    ```shell
    pipenv shell
    ```
@@ -43,6 +47,7 @@ A serverless Email Service with SQS and Twillio SendGrid
    - [AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 
 2. **Create AWS Profile:**
+
    ```shell
    aws configure --profile sparcs
    ```
@@ -51,13 +56,13 @@ A serverless Email Service with SQS and Twillio SendGrid
    - **Input `ap-southeast-1` for the default region name.**
    - **Leave blank for the default output format.**
 
-
 ## Setup Serverless Framework
 
 1. **Pre-requisites:**
    - Ensure `Node 14` or later is installed
 
 2. **Install serverless framework:**
+
    ```shell
    npm install -g serverless
    ```
@@ -68,9 +73,10 @@ A serverless Email Service with SQS and Twillio SendGrid
    ```
 
 ## Deploy to AWS
-   ```shell
-   serverless deploy --stage 'dev' --aws-profile 'sparcs' --verbose
-   ```
+
+```shell
+serverless deploy --stage 'dev' --aws-profile 'sparcs' --verbose
+```
 
 ## Resources
 

@@ -12,6 +12,9 @@ class EntryStatus(str, Enum):
 
 
 class CommonConstants:
+    # Email Constants
+    DURIANPY_CC_EMAIL = 'durianpy.davao@gmail.com'
+
     # DB Constants
     CLS = 'cls'
     HASH_KEY = 'hashKey'

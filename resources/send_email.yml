@@ -6,13 +6,13 @@ send-email:
   events:
     - sqs:
         arn:
-          "Fn::GetAtt": [ EmailQueue, Arn ]
+          "Fn::GetAtt": [EmailQueue, Arn]
   iamRoleStatements:
     - Effect: Allow
       Action:
         - "sqs:*"
       Resource:
-        - "Fn::GetAtt": [ EmailQueue, Arn ]
+        - "Fn::GetAtt": [EmailQueue, Arn]
     - Effect: Allow
       Action:
         - ssm:GetParameter
@@ -24,10 +24,10 @@ send-email:
       Action:
         - dynamodb:*
       Resource:
-        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations
-        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-registrations/index/*
+        - arn:aws:dynamodb:ap-southeast-1:${aws:accountId}:table/${self:custom.stage}-durianpy-events-registrations
+        - arn:aws:dynamodb:ap-southeast-1:${aws:accountId}:table/${self:custom.stage}-durianpy-events-registrations/index/*
     - Effect: Allow
       Action:
         - "dynamodb:*"
       Resource:
-        - arn:aws:dynamodb:ap-southeast-1:192218445313:table/${self:custom.stage}-sparcs-events-entities
+        - arn:aws:dynamodb:ap-southeast-1:${aws:accountId}:table/${self:custom.stage}-durianpy-events-entities

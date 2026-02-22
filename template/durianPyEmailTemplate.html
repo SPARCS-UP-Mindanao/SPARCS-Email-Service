@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DurianPy Email</title>
+    <style>
+      .icon-link:hover {
+        color: #007bff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <center>
+      <div
+        class="mainContent"
+        style="width: 100%; padding: 40px 0px; background-color: #ffffff"
+      >
+        <header style="width: 750px">
+          <table>
+            <tr>
+              <td
+                class="branding"
+                style="
+                  text-align: center;
+                  align-items: center;
+                  padding: 20px;
+                  color: red;
+                "
+              >
+                <img
+                  src="https://cdn.durianpy.org/durianpy_logo.png"
+                  width="375"
+                  alt="DurianPy Logo"
+                  style="display: block; margin: 0 auto"
+                />
+                <p
+                  style="
+                    color: #3eb372;
+                    font-family: &quot;Nunito Sans&quot;, sans-serif;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 600;
+                    text-align: center;
+                    line-height: 120%;
+                    margin: 0 auto;
+                    max-width: 257px;
+                    max-height: 57px;
+                  "
+                >
+                  Accelerating Davao's Tech Growth with Python
+                </p>
+              </td>
+            </tr>
+          </table>
+        </header>
+
+        <div
+          class="contentDiv"
+          style="
+            width: 750px;
+            border-style: solid;
+            padding: 30px 0px;
+            text-align: left;
+            background-color: white;
+            border: none;
+          "
+        >
+          <table>
+            <tr>
+              <td>
+                <div class="emailSalutation" style="padding: 10px 40px">
+                  <p
+                    style="
+                      color: var(--neutrals-800, #454545);
+                      font-family: &quot;Verdana&quot;, sans-serif;
+                      font-size: 13px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 120%;
+                      letter-spacing: -0.192px;
+                    "
+                  >
+                    {{salutation}}
+                  </p>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="emailBody" style="padding: 0px 40px">
+                {% for paragraph in body:%}
+                <p
+                  style="
+                    color: var(--neutrals-800, #454545);
+                    font-family: &quot;Verdana&quot;, sans-serif;
+                    font-size: 13px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 120%;
+                    letter-spacing: -0.192px;
+                  "
+                >
+                  {{paragraph}}
+                </p>
+                {% endfor %}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="emailRegards" style="padding: 10px 40px">
+                  {% for line in regards:%}
+                  <p
+                    style="
+                      color: var(--neutrals-800, #454545);
+                      font-family: &quot;Verdana&quot;, sans-serif;
+                      font-size: 13px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: 120%;
+                      letter-spacing: -0.192px;
+                    "
+                  >
+                    {{line}}
+                  </p>
+                  {% endfor %}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="padding: 10px 40px">
+                  <p style="font-family: Verdana, sans-serif; font-weight: 800">
+                    Arnel Jan Sarmiento
+                  </p>
+                  <p style="font-family: Verdana, sans-serif; font-size: 11px">
+                    Community Lead | DurianPy
+                  </p>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <footer style="width: 750px">
+          <img
+            src="https://cdn.durianpy.org/email_signature.png"
+            style="width: 100%"
+          />
+        </footer>
+      </div>
+    </center>
+  </body>
+</html>

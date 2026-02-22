@@ -23,7 +23,7 @@ def send_email_test():
         'emailType': 'registrationEmail',
         'eventId': 'uxplore-test',
         'useBackupSMTP': False,
-        'isSparcs': False,
+        'isDurianPy': False,
     }
     email_body = EmailIn(**email_data)
     email_usecase.send_email(email_body)
