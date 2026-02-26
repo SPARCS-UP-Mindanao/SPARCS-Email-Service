@@ -132,8 +132,8 @@ class EmailUsecase:
 
         # Send emails
         if use_backup_smtp:
-            logger.info('Using AWS SES as backup SMTP')
-            self.send_ses_email(
+            logger.info('Using SendGrid as secondary SMTP')
+            self.send_sendgrid_email(
                 msg=msg,
                 email_from=email_from,
                 to_email=to_email,
@@ -141,13 +141,14 @@ class EmailUsecase:
             )
 
         else:
-            logger.info('Using SendGrid as primary SMTP')
-            self.send_sendgrid_email(
+            logger.info('Using AWS SES as primary SMTP')
+            self.send_ses_email(
                 msg=msg,
                 email_from=email_from,
                 to_email=to_email,
                 email_body=email_body,
             )
+            
 
     def send_sendgrid_email(
         self,
